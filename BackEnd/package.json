@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node --env-file .env app.js",
+    "dev": "nodemon --env-file .env app.js",
     "test": "test"
   },
   "author": "ClaraMars & Cayetano97",
