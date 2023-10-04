@@ -1,7 +1,10 @@
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import BirdIcon from "../../assets/img/BirdMain.png";
-
+import { useState } from "react";
+import CheckBox from "expo-checkbox";
 const LoginRegister = () => {
+  const [isSelected, setSelection] = useState(false);
+
   return (
     <View style={styles.mainLoginRegister}>
       <View>
@@ -11,7 +14,11 @@ const LoginRegister = () => {
         <Text style={styles.login}>Iniciar sesión</Text>
         <Text style={styles.register}>Registrarse</Text>
       </View>
-      <View></View>
+      <View>
+        <TextInput placeholder="Email o nombre de usuario" />
+        <TextInput placeholder="Contraseña" />
+        <CheckBox value={isSelected} onValueChange={setSelection} />
+      </View>
     </View>
   );
 };
@@ -22,7 +29,7 @@ const styles = StyleSheet.create({
   mainLoginRegister: {
     height: "100%",
     width: "100%",
-    backgroundColor: "F7F7F7",
+    backgroundColor: "#F7F7F7",
   },
   title: {
     fontSize: 40,
@@ -32,5 +39,11 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-around",
+  },
+  login: {
+    fontSize: 20,
+  },
+  register: {
+    fontSize: 20,
   },
 });
