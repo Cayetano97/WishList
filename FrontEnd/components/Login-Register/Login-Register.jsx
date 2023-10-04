@@ -1,24 +1,88 @@
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import BirdIcon from "../../assets/img/BirdMain.png";
 import { useState } from "react";
 import CheckBox from "expo-checkbox";
 const LoginRegister = () => {
   const [isSelected, setSelection] = useState(false);
+  const [login, setLogin] = useState(true);
+
+  const handleChangeLog = () => {
+    setLogin(true);
+  };
+  const handleChangeReg = () => {
+    setLogin(false);
+  };
 
   return (
     <View style={styles.mainLoginRegister}>
+      <Image source={BirdIcon} style={styles.image} />
       <View>
         <Text style={styles.title}>WishList</Text>
       </View>
       <View style={styles.loginregister}>
-        <Text style={styles.login}>Iniciar sesión</Text>
-        <Text style={styles.register}>Registrarse</Text>
+        <TouchableOpacity onPress={handleChangeLog}>
+          <Text style={login ? styles.selected : styles.noselected}>
+            Iniciar sesión
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleChangeReg}>
+          <Text style={login ? styles.noselected : styles.selected}>
+            Registrarse
+          </Text>
+        </TouchableOpacity>
       </View>
-      <View>
-        <TextInput placeholder="Email o nombre de usuario" />
-        <TextInput placeholder="Contraseña" />
-        <CheckBox value={isSelected} onValueChange={setSelection} />
-      </View>
+      {login ? (
+        <View style={styles.input}>
+          <View style={styles.containerinputs}>
+            <TextInput
+              style={styles.inputtext}
+              placeholder="Email o nombre de usuario"
+            />
+            <TextInput placeholder="Contraseña" />
+          </View>
+          <View style={styles.checkbox}>
+            <CheckBox value={isSelected} onValueChange={setSelection} />
+            <Text>Recordar sesión</Text>
+          </View>
+          <View style={styles.boton}>
+            <TouchableOpacity>
+              <Text>Inicio sesión</Text>
+            </TouchableOpacity>
+            <View style={styles.noaccount}>
+              <Text>¿Aún no tienes cuenta?</Text>
+              <TouchableOpacity onPress={handleChangeReg}>
+                <Text style={styles.botontoreg}>Regístrate</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      ) : (
+        <View style={styles.input}>
+          <TextInput placeholder="Email" />
+          <TextInput placeholder="Nombre" />
+          <TextInput placeholder="Nombre de usuario" />
+          <TextInput placeholder="Contraseña" />
+          <TextInput placeholder="Repetir contraseña" />
+          <View style={styles.boton}>
+            <TouchableOpacity>
+              <Text>Regístrate</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.noaccount}>
+            <Text>¿Ya registrado?</Text>
+            <TouchableOpacity onPress={handleChangeLog}>
+              <Text style={styles.botontoreg}>Inicia sesión</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
     </View>
   );
 };
@@ -30,20 +94,63 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     backgroundColor: "#F7F7F7",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  image: {
+    marginTop: 50,
+    height: 175,
+    width: 275,
   },
   title: {
-    fontSize: 40,
+    fontSize: 35,
     textAlign: "center",
   },
   loginregister: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-around",
+    width: "80%",
+    justifyContent: "space-between",
+    marginTop: 30,
   },
-  login: {
+  input: {
+    width: "90%",
+    marginTop: 30,
+  },
+  containerinputs: {
+    marginBottom: 20,
+  },
+  selected: {
+    fontSize: 20,
+    borderBottomWidth: 1,
+    fontWeight: "bold",
+    paddingBottom: 5,
+  },
+  noselected: {
     fontSize: 20,
   },
-  register: {
-    fontSize: 20,
+  inputtext: {
+    height: 40,
+  },
+  checkbox: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  boton: {
+    display: "flex",
+    alignItems: "center",
+    marginTop: 10,
+  },
+  noaccount: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 10,
+  },
+  botontoreg: {
+    color: "#8A3EB9",
+    marginLeft: 5,
   },
 });
