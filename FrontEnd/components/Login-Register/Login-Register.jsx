@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet, TextInput } from "react-native";
+import BirdIcon from "../../assets/img/BirdMain.png";
 
 const LoginRegister = () => {
   return (
@@ -21,6 +22,7 @@ const styles = StyleSheet.create({
   mainLoginRegister: {
     height: "100%",
     width: "100%",
+    backgroundColor: "F7F7F7",
   },
   title: {
     fontSize: 40,
