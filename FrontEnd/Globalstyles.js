@@ -21,9 +21,6 @@ const globalstyles = StyleSheet.create({
         fontSize: 17,
         fontFamily: "Inter_300Light",
     },
-
-
-
 });
 
 export default globalstyles;
