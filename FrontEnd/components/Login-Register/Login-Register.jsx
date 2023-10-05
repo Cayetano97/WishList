@@ -129,6 +129,7 @@ const styles = StyleSheet.create({
   },
   noselected: {
     fontSize: 20,
+    color: "grey",
   },
   inputtext: {
     height: 40,
