@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import globalstyles from "./Globalstyles";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity } from "react-native";
 import * as Font from 'expo-font';
 import { useState, useEffect } from "react";
 
@@ -41,7 +41,15 @@ export default function App() {
       <StatusBar style="auto" />
       
       <View style={styles.container}>
-        <Text style={[globalstyles.input, globalstyles.placeholder]}>Hola</Text>
+        <TextInput style={globalstyles.input} placeholder="Nombre de usuario" />
+        <TextInput style={globalstyles.input} placeholder="Contraseña" />
+        {/* <Button title= "Inicia sesión" color="#8A3EB9" marginTop={30} /> */}
+        <TouchableOpacity style={[globalstyles.button, globalstyles.purpleButton]}>
+          <Text style={globalstyles.placeholderButton}>Inicia sesión</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[globalstyles.button, globalstyles.deleteButton]}>
+          <Text style={[globalstyles.placeholderButton, globalstyles.placeholderDeleteButton]}>Inicia sesión</Text>
+        </TouchableOpacity>
       </View>
       </>
   );
