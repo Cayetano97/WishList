@@ -8,14 +8,15 @@ const User = require("../Model/userModel");
 
 router.post("/login", async (req, res) => {
   try {
-    const data = await User.findOne({ email: req.body.email }).exec();
+    const data = await User.findOne({
+      $or: [{ email: req.body.email }, { username: req.body.username }],
+    }).exec();
     if (data) {
       const password = await bcrypt.compare(req.body.password, data.password);
       if (password) {
         res.status(200).json({
           Status: "Success Login",
           data: {
-            // id: data._id,
             username: data.username,
             email: data.email,
             password: data.password,
