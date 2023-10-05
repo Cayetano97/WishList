@@ -4,10 +4,19 @@ import { StyleSheet } from "react-native";
 
 const globalstyles = StyleSheet.create({
 
-    input: {
+    // General styles
+    main: {
+        height: "100%",
+        width: "100%",
+        backgroundColor: "#F7F7F7",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+    },
+
+    card: {
         backgroundColor: "#fff",
         width: 350,
-        height: 48,
         borderStyle: "solid",
         borderColor: "transparent",
         borderRadius: 8,
@@ -15,13 +24,24 @@ const globalstyles = StyleSheet.create({
         elevation: 13,
         padding: 13,
         marginBottom: 10,
-        color: "#636262", 
-        fontSize: 17,
+    },
+
+    image: {
+        width: "100%",
+        height: "auto",
+    },
+
+    input: {
+        height: 48,
+    },
+
+    textInput: {
         fontFamily: "Inter_300Light",
+        fontSize: 17,
+        color: "#636262",
     },
 
     // Button styles
-
     button: {
         padding: 8,
         borderRadius: 8,

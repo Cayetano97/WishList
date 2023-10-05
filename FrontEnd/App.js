@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 import * as Font from 'expo-font';
 import { useState, useEffect } from "react";
 import LoginRegister from "./components/Login-Register/Login-Register";
+import CustomizeProfile from "./components/Login-Register/Customize-Profile";
 
 export default function App() {
 
@@ -34,7 +35,8 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <LoginRegister />
+      {/* <LoginRegister /> */}
+      <CustomizeProfile />
     </View>
     
   );
