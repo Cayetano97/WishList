@@ -12,6 +12,43 @@ import CheckBox from "expo-checkbox";
 const LoginRegister = () => {
   const [isSelected, setSelection] = useState(false);
   const [login, setLogin] = useState(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async () => {
+    if (email !== "" && password !== "") {
+      try {
+        const response = await fetch("http://localhost:8000/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+          }),
+        });
+        alert(data);
+        if (data.Status === "Success Login") {
+          setEmail("");
+          setPassword("");
+          alert("Inicio de sesión correcto");
+        } else {
+          alert("Inicio de sesión incorrecto");
+        }
+      } catch (error) {
+        alert("Inicio de sesión incorrecto");
+      }
+    }
+  };
+
+  const handleChange = (text, field) => {
+    if (field === "email") {
+      setEmail(text);
+    } else if (field === "password") {
+      setPassword(text);
+    }
+  };
 
   const handleChangeLog = () => {
     setLogin(true);
@@ -43,16 +80,22 @@ const LoginRegister = () => {
           <View style={styles.containerinputs}>
             <TextInput
               style={styles.inputtext}
+              value={email}
+              onChangeText={(text) => handleChange(text, "email")}
               placeholder="Email o nombre de usuario"
             />
-            <TextInput placeholder="Contraseña" />
+            <TextInput
+              value={password}
+              onChangeText={(text) => handleChange(text, "password")}
+              placeholder="Contraseña"
+            />
           </View>
           <View style={styles.checkbox}>
             <CheckBox value={isSelected} onValueChange={setSelection} />
             <Text>Recordar sesión</Text>
           </View>
           <View style={styles.boton}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleSubmit}>
               <Text>Inicio sesión</Text>
             </TouchableOpacity>
             <View style={styles.noaccount}>
