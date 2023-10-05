@@ -28,6 +28,9 @@ db.on("Error", (error) => {
   console.log("Database error", error);
 });
 
+const user = require("./Controller/userController");
+app.use("/", user);
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
