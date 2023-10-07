@@ -45,16 +45,19 @@ const CustomizeProfile = () => {
     //Patch para cambiar el icono de usuario
     setIsLoading(true);
     try {
-      const data = await fetch("http://localhost:3000/users/1", {
-        //CORREGIR URL
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          icon: image,
-        }),
-      });
+      const data = await fetch(
+        "mongodb+srv://Clara:*****@cluster0.b4lvmyd.mongodb.net/",
+        {
+          //CORREGIR URL
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            icon: image,
+          }),
+        }
+      );
 
       if (data.ok) {
         await data.json();
