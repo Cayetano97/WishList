@@ -22,6 +22,8 @@ const CustomizeProfile = () => {
   const [image, setImage] = useState(Jellyfish);
   const [name, setName] = useState("Usuario");
   const [username, setUsername] = useState("@usuario");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const navigation = useNavigation();
 
   const animalIcons = [
@@ -39,13 +41,37 @@ const CustomizeProfile = () => {
     { name: "Bear", image: Bear },
   ];
 
-  const handleCreateProfile = () => {
-    // navigation.navigate("Home");
+  const handleIcon = async () => {
+    //Patch para cambiar el icono de usuario
+    setIsLoading(true);
+    try {
+      const data = await fetch("http://localhost:3000/users/1", {
+        //CORREGIR URL
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          icon: image,
+        }),
+      });
+
+      if (data.ok) {
+        await data.json();
+      } else {
+        setError(true);
+      }
+    } catch (error) {
+      setError(true);
+    }
+    setIsLoading(false);
   };
 
-  const handleOmit = () => {
-    // navigation.navigate("Home");
-    setImage(User);
+  const handleCreateProfile = () => {
+    if (image !== User) {
+      handleIcon();
+    }
+    navigation.navigate("Login");
   };
 
   return (
@@ -91,7 +117,7 @@ const CustomizeProfile = () => {
       </TouchableOpacity>
       <TouchableOpacity
         style={[globalstyles.button, globalstyles.purpleButton]}
-        onPress={handleOmit}
+        onPress={handleCreateProfile}
       >
         <Text
           style={[
@@ -110,7 +136,7 @@ export default CustomizeProfile;
 
 const styles = StyleSheet.create({
   text: {
-    marginTop: 55,
+    marginTop: 40,
     fontSize: 25,
     fontFamily: "Inter_600SemiBold",
   },
@@ -160,7 +186,7 @@ const styles = StyleSheet.create({
   },
 
   icons: {
-    height: 320,
+    height: 310,
     marginTop: 15,
     marginBottom: 20,
   },
@@ -184,7 +210,7 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    marginVertical: 10,
+    marginVertical: 7,
   },
 
   animalBorder: {

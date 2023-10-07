@@ -1,14 +1,14 @@
-import { StatusBar } from "expo-status-bar";
-import globalstyles from "./Globalstyles";
-import { StyleSheet, Text, View } from "react-native";
+import { Text, StatusBar } from "react-native";
 import * as Font from 'expo-font';
 import { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import LoginRegister from "./components/Login-Register/Login-Register";
-import CustomizeProfile from "./components/Login-Register/Customize-Profile";
+import AppNavigator from "./AppNavigator";
+// import {SplashScreen} from "expo-splash-screen";
+import AppLoading from "./AppLoading";
 
 export default function App() {
 
+  // SplashScreen.preventAutoHideAsync();
   const [fontLoaded, setFontLoaded] = useState(false);
 
   useEffect(() => {
@@ -29,28 +29,20 @@ export default function App() {
   loadFont();
   }, []);
 
-  if (!fontLoaded) {
-    return <Text>Loading...</Text>;
-  }
-
+  // if (!fontLoaded) {
+  //   return <Text>Loading...</Text>;
+  // }
 
   return (
-    <NavigationContainer>
-      <View style={styles.container}>
-        {/* <LoginRegister /> */}
-        <CustomizeProfile />
-      </View>
-    </NavigationContainer>
-    
+    <>
+      <StatusBar barStyle="dark-content" backgroundColor="#F7F7F7"/>
+      {fontLoaded ? (
+        <NavigationContainer>
+          <AppNavigator />  
+        </NavigationContainer>
+      ) : 
+      <AppLoading/>}
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
  
