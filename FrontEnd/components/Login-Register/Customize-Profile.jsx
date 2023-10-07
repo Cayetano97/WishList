@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import Bear from "../../assets/img/Bear.png";
 import Bird from "../../assets/img/Bird.png";
@@ -18,16 +19,41 @@ import { useState } from "react";
 import globalstyles from "../../Globalstyles";
 
 const CustomizeProfile = () => {
-  const [image, setImage] = useState(User);
+  const [image, setImage] = useState(Jellyfish);
   const [name, setName] = useState("Usuario");
   const [username, setUsername] = useState("@usuario");
+  const navigation = useNavigation();
+
+  const animalIcons = [
+    { name: "Jellyfish", image: Jellyfish },
+    { name: "Sheep", image: Sheep },
+    { name: "Deer", image: Deer },
+    { name: "Whale", image: Whale },
+    { name: "Cat", image: Cat },
+    { name: "Bird", image: Bird },
+    { name: "Mouse", image: Mouse },
+    { name: "Crab", image: Crab },
+    { name: "Butterfly", image: Butterfly },
+    { name: "Pig", image: Pig },
+    { name: "Fox", image: Fox },
+    { name: "Bear", image: Bear },
+  ];
+
+  const handleCreateProfile = () => {
+    // navigation.navigate("Home");
+  };
+
+  const handleOmit = () => {
+    // navigation.navigate("Home");
+    setImage(User);
+  };
 
   return (
     <View style={globalstyles.main}>
       <Text style={styles.text}>Personaliza tu perfil</Text>
       <View style={styles.profile}>
         <View style={styles.imageBackground} />
-        <Image source={User} style={[globalstyles.image, styles.image]} />
+        <Image source={image} style={[globalstyles.image, styles.image]} />
         <View style={styles.username}>
           <Text style={styles.nameText}>{name}</Text>
           <Text style={styles.unsernameText}>{username}</Text>
@@ -36,58 +62,23 @@ const CustomizeProfile = () => {
       <View style={[globalstyles.card, styles.icons]}>
         <Text style={styles.textIcon}>Elige un icono</Text>
         <View style={styles.animalIcons}>
-          <View style={styles.animalCards}>
-            <View style={styles.animalBorder} />
-            <Image source={Jellyfish} style={styles.animalImages} />
-          </View>
-          <View style={styles.animalCards}>
-            <View style={styles.animalBorder} />
-            <Image source={Sheep} style={styles.animalImages} />
-          </View>
-          <View style={styles.animalCards}>
-            <View style={styles.animalBorder} />
-            <Image source={Deer} style={styles.animalImages} />
-          </View>
-          <View style={styles.animalCards}>
-            <View style={styles.animalBorder} />
-            <Image source={Whale} style={styles.animalImages} />
-          </View>
-          <View style={styles.animalCards}>
-            <View style={styles.animalBorder} />
-            <Image source={Cat} style={styles.animalImages} />
-          </View>
-          <View style={styles.animalCards}>
-            <View style={styles.animalBorder} />
-            <Image source={Bird} style={styles.animalImages} />
-          </View>
-          <View style={styles.animalCards}>
-            <View style={styles.animalBorder} />
-            <Image source={Mouse} style={styles.animalImages} />
-          </View>
-          <View style={styles.animalCards}>
-            <View style={styles.animalBorder} />
-            <Image source={Crab} style={styles.animalImages} />
-          </View>
-          <View style={styles.animalCards}>
-            <View style={styles.animalBorder} />
-            <Image source={Butterfly} style={styles.animalImages} />
-          </View>
-          <View style={styles.animalCards}>
-            <View style={styles.animalBorder} />
-            <Image source={Pig} style={styles.animalImages} />
-          </View>
-          <View style={styles.animalCards}>
-            <View style={styles.animalBorder} />
-            <Image source={Fox} style={styles.animalImages} />
-          </View>
-          <View style={styles.animalCards}>
-            <View style={styles.animalBorder} />
-            <Image source={Bear} style={styles.animalImages} />
-          </View>
+          {animalIcons.map((animal) => {
+            return (
+              <TouchableOpacity
+                key={animal.name}
+                style={styles.animalCards}
+                onPress={() => setImage(animal.image)}
+              >
+                <View style={styles.animalBorder} />
+                <Image source={animal.image} style={styles.animalImages} />
+              </TouchableOpacity>
+            );
+          })}
         </View>
       </View>
       <TouchableOpacity
         style={[globalstyles.button, globalstyles.purpleMainButton]}
+        onPress={handleCreateProfile}
       >
         <Text
           style={[
@@ -100,6 +91,7 @@ const CustomizeProfile = () => {
       </TouchableOpacity>
       <TouchableOpacity
         style={[globalstyles.button, globalstyles.purpleButton]}
+        onPress={handleOmit}
       >
         <Text
           style={[
@@ -118,7 +110,7 @@ export default CustomizeProfile;
 
 const styles = StyleSheet.create({
   text: {
-    marginTop: 65,
+    marginTop: 55,
     fontSize: 25,
     fontFamily: "Inter_600SemiBold",
   },
@@ -169,13 +161,15 @@ const styles = StyleSheet.create({
 
   icons: {
     height: 320,
-    marginVertical: 15,
+    marginTop: 15,
+    marginBottom: 20,
   },
 
   textIcon: {
     fontFamily: "Inter_400Regular",
     fontSize: 20,
-    marginBottom: 20,
+    marginTop: 10,
+    marginBottom: 15,
     textAlign: "center",
   },
 

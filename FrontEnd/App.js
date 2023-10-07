@@ -3,6 +3,7 @@ import globalstyles from "./Globalstyles";
 import { StyleSheet, Text, View } from "react-native";
 import * as Font from 'expo-font';
 import { useState, useEffect } from "react";
+import { NavigationContainer } from "@react-navigation/native";
 import LoginRegister from "./components/Login-Register/Login-Register";
 import CustomizeProfile from "./components/Login-Register/Customize-Profile";
 
@@ -34,10 +35,12 @@ export default function App() {
 
 
   return (
-    <View style={styles.container}>
-      {/* <LoginRegister /> */}
-      <CustomizeProfile />
-    </View>
+    <NavigationContainer>
+      <View style={styles.container}>
+        {/* <LoginRegister /> */}
+        <CustomizeProfile />
+      </View>
+    </NavigationContainer>
     
   );
 }
