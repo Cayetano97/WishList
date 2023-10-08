@@ -4,22 +4,31 @@ const bcrypt = require("bcrypt");
 
 const User = require("../Model/userModel");
 
+// Check database connection
+
+router.get("/check", async (req, res) => {
+  try {
+    const users = await User.find().toArray();
+    res.json(users);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 // Login
 
 router.post("/login", async (req, res) => {
   try {
-    const data = await User.findOne({
-      $or: [{ email: req.body.email }, { username: req.body.username }],
-    }).exec();
+    const data = await User.findOne({ email: req.body.email }).exec();
     if (data) {
       const password = await bcrypt.compare(req.body.password, data.password);
       if (password) {
         res.status(200).json({
           Status: "Success Login",
           data: {
-            username: data.username,
+            // username: data.username || null,
             email: data.email,
-            password: data.password,
           },
           error: null,
         });

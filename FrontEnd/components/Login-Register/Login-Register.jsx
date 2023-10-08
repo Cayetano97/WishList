@@ -15,9 +15,22 @@ const LoginRegister = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const handleCheck = async () => {
+    try {
+      const response = await fetch("/check");
+      const data = await response.json();
+      if (response.status === 200) {
+        alert("Check BBDD");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleSubmit = async () => {
     if (email !== "" && password !== "") {
       try {
+        console.log("try");
         const response = await fetch("http://localhost:8000/login", {
           method: "POST",
           headers: {
@@ -26,19 +39,21 @@ const LoginRegister = () => {
           body: JSON.stringify({
             email: email,
             password: password,
+            // username: username !== "" ? username : undefined,
           }),
         });
-        alert(data);
-        if (data.Status === "Success Login") {
-          setEmail("");
-          setPassword("");
+        const data = await response.json();
+        if (response.status === 200) {
           alert("Inicio de sesión correcto");
         } else {
           alert("Inicio de sesión incorrecto");
         }
       } catch (error) {
-        alert("Inicio de sesión incorrecto");
+        console.log(error);
+        // alert("Inicio de sesión incorrecto");
       }
+    } else {
+      alert("Rellene todos los campos");
     }
   };
 
@@ -97,6 +112,9 @@ const LoginRegister = () => {
           <View style={styles.boton}>
             <TouchableOpacity onPress={handleSubmit}>
               <Text>Inicio sesión</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleCheck}>
+              <Text>Check BBDD</Text>
             </TouchableOpacity>
             <View style={styles.noaccount}>
               <Text>¿Aún no tienes cuenta?</Text>
