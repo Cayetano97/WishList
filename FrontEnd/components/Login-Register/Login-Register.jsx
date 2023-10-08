@@ -6,7 +6,7 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import BirdIcon from "../../assets/img/BirdMain.png";
+import BirdIcon from "../../assets/img/animals/BirdMain.png";
 import { useState } from "react";
 import CheckBox from "expo-checkbox";
 const LoginRegister = () => {

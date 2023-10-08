@@ -1,19 +1,19 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import Bear from "../../assets/img/Bear.png";
-import Bird from "../../assets/img/Bird.png";
-import Butterfly from "../../assets/img/Butterfly.png";
-import Cat from "../../assets/img/Cat.png";
-import Crab from "../../assets/img/Crab.png";
-import Deer from "../../assets/img/Deer.png";
-import Fox from "../../assets/img/Fox.png";
-import Jellyfish from "../../assets/img/Jellyfish.png";
-import Mouse from "../../assets/img/Mouse.png";
-import Pig from "../../assets/img/Pig.png";
-import Sheep from "../../assets/img/Sheep.png";
-import User from "../../assets/img/User.png";
-import Whale from "../../assets/img/Whale.png";
+import Bear from "../../assets/img/animals/Bear.png";
+import Bird from "../../assets/img/animals/Bird.png";
+import Butterfly from "../../assets/img/animals/Butterfly.png";
+import Cat from "../../assets/img/animals/Cat.png";
+import Crab from "../../assets/img/animals/Crab.png";
+import Deer from "../../assets/img/animals/Deer.png";
+import Fox from "../../assets/img/animals/Fox.png";
+import Jellyfish from "../../assets/img/animals/Jellyfish.png";
+import Mouse from "../../assets/img/animals/Mouse.png";
+import Pig from "../../assets/img/animals/Pig.png";
+import Sheep from "../../assets/img/animals/Sheep.png";
+import User from "../../assets/img/animals/User.png";
+import Whale from "../../assets/img/animals/Whale.png";
 
 import { useState } from "react";
 import globalstyles from "../../Globalstyles";
