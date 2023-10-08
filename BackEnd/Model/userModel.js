@@ -34,7 +34,7 @@ const userSchema = new Schema(
       Enum: [
         "Jellyfish",
         "Sheep",
-        "deer",
+        "Deer",
         "Whale",
         "Cat",
         "Bird",

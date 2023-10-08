@@ -12,6 +12,58 @@ import CheckBox from "expo-checkbox";
 const LoginRegister = () => {
   const [isSelected, setSelection] = useState(false);
   const [login, setLogin] = useState(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleCheck = async () => {
+    try {
+      const response = await fetch("/check");
+      const data = await response.json();
+      if (response.status === 200) {
+        alert("Check BBDD");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (email !== "" && password !== "") {
+      try {
+        console.log("try");
+        const response = await fetch("http://localhost:8000/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+            // username: username !== "" ? username : undefined,
+          }),
+        });
+        const data = await response.json();
+        if (response.status === 200) {
+          alert("Inicio de sesión correcto");
+        } else {
+          alert("Inicio de sesión incorrecto");
+        }
+      } catch (error) {
+        console.log(error);
+        // alert("Inicio de sesión incorrecto");
+      }
+    } else {
+      alert("Rellene todos los campos");
+    }
+  };
+
+  const handleChange = (text, field) => {
+    if (field === "email") {
+      setEmail(text);
+    } else if (field === "password") {
+      setPassword(text);
+    }
+  };
 
   const handleChangeLog = () => {
     setLogin(true);
@@ -43,17 +95,26 @@ const LoginRegister = () => {
           <View style={styles.containerinputs}>
             <TextInput
               style={styles.inputtext}
+              value={email}
+              onChangeText={(text) => handleChange(text, "email")}
               placeholder="Email o nombre de usuario"
             />
-            <TextInput placeholder="Contraseña" />
+            <TextInput
+              value={password}
+              onChangeText={(text) => handleChange(text, "password")}
+              placeholder="Contraseña"
+            />
           </View>
           <View style={styles.checkbox}>
             <CheckBox value={isSelected} onValueChange={setSelection} />
             <Text>Recordar sesión</Text>
           </View>
           <View style={styles.boton}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleSubmit}>
               <Text>Inicio sesión</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleCheck}>
+              <Text>Check BBDD</Text>
             </TouchableOpacity>
             <View style={styles.noaccount}>
               <Text>¿Aún no tienes cuenta?</Text>

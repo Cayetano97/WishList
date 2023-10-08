@@ -9,17 +9,25 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.cayetan00.WishList"
     },
     "web": {
       "favicon": "./assets/img/BirdMain.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "58f63678-00c7-41c6-9da4-be9a4ccb0074"
+      }
     }
   }
 }
