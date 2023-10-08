@@ -45,27 +45,25 @@ const CustomizeProfile = () => {
     //Patch para cambiar el icono de usuario
     setIsLoading(true);
     try {
-      const data = await fetch(
-        "mongodb+srv://Clara:*****@cluster0.b4lvmyd.mongodb.net/",
-        {
-          //CORREGIR URL
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            icon: image,
-          }),
-        }
-      );
-
+      console.log("Enviando datos");
+      const data = await fetch("http://localhost:8081/check", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("Datos enviados");
       if (data.ok) {
         await data.json();
+        console.log("Icono cambiado");
       } else {
+        console.log(data);
+        console.log("Error al cambiar el icono");
         setError(true);
       }
     } catch (error) {
       setError(true);
+      console.log(error);
     }
     setIsLoading(false);
   };
