@@ -4,19 +4,6 @@ const bcrypt = require("bcrypt");
 
 const User = require("../Model/userModel");
 
-// Check database connection
-
-router.get("/check", async (req, res) => {
-  try {
-    const users = await User.find().toArray();
-    console.log(users);
-    res.status(200).json(users);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
-
 // Login
 
 router.post("/login", async (req, res) => {
@@ -28,8 +15,8 @@ router.post("/login", async (req, res) => {
         res.status(200).json({
           Status: "Success Login",
           data: {
-            // username: data.username || null,
             email: data.email,
+            password: data.password,
           },
           error: null,
         });
@@ -65,8 +52,7 @@ router.post("/register", async (req, res) => {
       email: req.body.email,
       name: req.body.name,
       username: req.body.username,
-      // password: await bcrypt.hash(req.body.password, 10),
-      password: req.body.password,
+      password: await bcrypt.hash(req.body.password, 10),
     });
     const datasaved = await data.save();
     res.status(200).json({ Status: "Success register", datasaved });
