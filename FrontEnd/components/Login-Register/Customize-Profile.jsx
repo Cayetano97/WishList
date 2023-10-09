@@ -13,7 +13,6 @@ import Jellyfish from "../../assets/img/animals/Jellyfish.png";
 import Mouse from "../../assets/img/animals/Mouse.png";
 import Pig from "../../assets/img/animals/Pig.png";
 import Sheep from "../../assets/img/animals/Sheep.png";
-import User from "../../assets/img/animals/User.png";
 import Whale from "../../assets/img/animals/Whale.png";
 
 import globalstyles from "../../Globalstyles";
@@ -21,8 +20,10 @@ import globals from "../../Global";
 
 const CustomizeProfile = ({ route }) => {
   const [image, setImage] = useState(Jellyfish);
+  const [imageName, setImageName] = useState("Jellyfish");
   const [name, setName] = useState("Usuario");
   const [username, setUsername] = useState("@usuario");
+  const [id, setId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigation = useNavigation();
@@ -56,9 +57,9 @@ const CustomizeProfile = ({ route }) => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
         setName(data.data.name);
         setUsername(data.data.username);
+        setId(data.data._id);
       } else {
         console.log("Error al obtener información del usuario");
         setError(true);
@@ -71,7 +72,7 @@ const CustomizeProfile = ({ route }) => {
 
   //Patch para cambiar el icono de usuario
 
-  const handleCreateProfile = async () => {
+  const handleIcon = async (textButton) => {
     setIsLoading(true);
     try {
       const response = await fetch(`${globals.IP}/update/${email}`, {
@@ -80,13 +81,13 @@ const CustomizeProfile = ({ route }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          icon: image,
+          icon: textButton === "Crear perfil" ? imageName : "User",
         }),
       });
       if (response.ok) {
-        navigation.navigate("Home");
+        navigation.navigate("Home", { id: id });
       } else {
-        console.log("Error al cambiar el icono");
+        alert("Error al cambiar el icono");
         setError(true);
       }
     } catch (error) {
@@ -95,28 +96,12 @@ const CustomizeProfile = ({ route }) => {
     setIsLoading(false);
   };
 
-  const handleOmit = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch(`${globals.IP}/update/${email}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          icon: User,
-        }),
-      });
-      if (response.ok) {
-        navigation.navigate("Home");
-      } else {
-        console.log("Error al cambiar el icono");
-        setError(true);
-      }
-    } catch (error) {
-      setError(true);
-    }
-    setIsLoading(false);
+  const handleCreateProfile = async () => {
+    handleIcon("Crear perfil");
+  };
+
+  const handleSkip = async () => {
+    handleIcon("omitir");
   };
 
   //UseEffect
@@ -143,7 +128,9 @@ const CustomizeProfile = ({ route }) => {
               <TouchableOpacity
                 key={animal.name}
                 style={styles.animalCards}
-                onPress={() => setImage(animal.image)}
+                onPress={() => {
+                  setImage(animal.image), setImageName(animal.name);
+                }}
               >
                 <View style={styles.animalBorder} />
                 <Image source={animal.image} style={styles.animalImages} />
@@ -167,7 +154,7 @@ const CustomizeProfile = ({ route }) => {
       </TouchableOpacity>
       <TouchableOpacity
         style={[globalstyles.button, globalstyles.purpleButton]}
-        onPress={handleOmit}
+        onPress={handleSkip}
       >
         <Text
           style={[

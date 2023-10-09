@@ -3,7 +3,8 @@ import { ScrollView, View, Text, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Gear from "../../assets/img/utils/Gear.png";
 
-const Home = () => {
+const Home = ({ route }) => {
+  const { id } = route.params;
   const navigation = useNavigation();
 
   const handleSettings = () => {
@@ -25,6 +26,7 @@ const Home = () => {
         </View>
         <View>
           <Text style={styles.username}>Icon</Text>
+          <Text style={styles.username}>{id}</Text>
         </View>
       </View>
       <View style={styles.wishlist}>
