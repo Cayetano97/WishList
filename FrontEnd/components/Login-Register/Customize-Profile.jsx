@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -15,7 +16,6 @@ import Sheep from "../../assets/img/animals/Sheep.png";
 import User from "../../assets/img/animals/User.png";
 import Whale from "../../assets/img/animals/Whale.png";
 
-import { useState } from "react";
 import globalstyles from "../../Globalstyles";
 import globals from "../../Global";
 
@@ -43,18 +43,44 @@ const CustomizeProfile = ({ route }) => {
     { name: "Bear", image: Bear },
   ];
 
+  //Fetch functions
+
+  const user = async () => {
+    try {
+      const response = await fetch(`${globals.IP}/userinfo/${email}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        setName(data.data.name);
+        setUsername(data.data.username);
+      } else {
+        console.log("Error al obtener información del usuario");
+        setError(true);
+      }
+    } catch (error) {
+      console.log(error);
+      setError(true);
+    }
+  };
+
   //Patch para cambiar el icono de usuario
 
   const handleCreateProfile = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${globals.IP} / ${email}`, {
+      const response = await fetch(`${globals.IP}/update/${email}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          icon: image !== "" ? image : image,
+          icon: image,
         }),
       });
       if (response.ok) {
@@ -68,6 +94,35 @@ const CustomizeProfile = ({ route }) => {
     }
     setIsLoading(false);
   };
+
+  const handleOmit = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${globals.IP}/update/${email}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          icon: User,
+        }),
+      });
+      if (response.ok) {
+        navigation.navigate("Home");
+      } else {
+        console.log("Error al cambiar el icono");
+        setError(true);
+      }
+    } catch (error) {
+      setError(true);
+    }
+    setIsLoading(false);
+  };
+
+  //UseEffect
+  useEffect(() => {
+    user();
+  }, []);
 
   return (
     <View style={globalstyles.main}>
@@ -112,7 +167,7 @@ const CustomizeProfile = ({ route }) => {
       </TouchableOpacity>
       <TouchableOpacity
         style={[globalstyles.button, globalstyles.purpleButton]}
-        onPress={handleCreateProfile}
+        onPress={handleOmit}
       >
         <Text
           style={[
