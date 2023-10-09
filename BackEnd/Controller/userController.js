@@ -21,26 +21,30 @@ router.get("/check", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
+    console.log(req.body);
     const data = await User.findOne({ email: req.body.email }).exec();
+    console.log(data);
     if (data) {
-      const password = await bcrypt.compare(req.body.password, data.password);
-      if (password) {
+      console.log("Entra en data")
+      // const password = await bcrypt.compare(req.body.password, data.password);
+      // if (password) {
         res.status(200).json({
           Status: "Success Login",
           data: {
             // username: data.username || null,
             email: data.email,
+            password: data.password,
           },
           error: null,
         });
-      } else {
-        body = req.body;
-        res.status(404).json({
-          Status: "Error - Failed Login",
-          data: null,
-          error: "Fallo Login - Email or password incorrect",
-        });
-      }
+      // } else {
+      //   body = req.body;
+      //   res.status(404).json({
+      //     Status: "Error - Failed Login",
+      //     data: null,
+      //     error: "Fallo Login - Email or password incorrect",
+      //   });
+      // }
     } else {
       res.status(404).json({
         Status: "Error",
@@ -65,7 +69,8 @@ router.post("/register", async (req, res) => {
       email: req.body.email,
       name: req.body.name,
       username: req.body.username,
-      password: await bcrypt.hash(req.body.password, 10),
+      // password: await bcrypt.hash(req.body.password, 10),
+      password: req.body.password,
     });
     const datasaved = await data.save();
     res.status(200).json({ Status: "Success register", datasaved });

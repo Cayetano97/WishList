@@ -12,7 +12,7 @@ const AppNavigator = () => {
         <Stack.Screen name="Profile" component={CustomizeProfile} options={{headerShown: false}}/>
         <Stack.Screen name="Home" component={Home} options={{headerShown: false}}/>
       </Stack.Navigator>
-  );
+  )
 };
 
 export default AppNavigator;

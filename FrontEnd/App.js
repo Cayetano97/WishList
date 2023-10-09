@@ -1,4 +1,4 @@
-import { Text, StatusBar } from "react-native";
+import { StatusBar } from "react-native";
 import * as Font from 'expo-font';
 import { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";

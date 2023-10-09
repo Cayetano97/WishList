@@ -31,7 +31,7 @@ const LoginRegister = () => {
     if (email !== "" && password !== "") {
       try {
         console.log("try");
-        const response = await fetch("http://localhost:8081/login", {
+        const response = await fetch("http://192.168.1.85:8000/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -42,6 +42,7 @@ const LoginRegister = () => {
             // username: username !== "" ? username : undefined,
           }),
         });
+        console.log(response);
         const data = await response.json();
         if (response.status === 200) {
           alert("Inicio de sesión correcto");

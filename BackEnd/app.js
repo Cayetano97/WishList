@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(cors());
 
 // Conexión a MongoDB Atlas
-const URL = `mongodb+srv://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_CLUSTER}.b4lvmyd.mongodb.net/?retryWrites=true&w=majority`;
+const URL = `mongodb+srv://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_CLUSTER}.b4lvmyd.mongodb.net/${process.env.DATABASE_NAME}?retryWrites=true&w=majority`;
 mongoose.connect(URL, { useNewUrlParser: true });
 
 const db = mongoose.connection;
