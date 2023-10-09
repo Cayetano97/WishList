@@ -8,8 +8,8 @@ const Stack = createStackNavigator();
 const AppNavigator = () => {
   return (
       <Stack.Navigator>
-        {/* <Stack.Screen name="Login" component={LoginRegister} options={{headerShown: false}}/>
-        <Stack.Screen name="Profile" component={CustomizeProfile} options={{headerShown: false}}/> */}
+        <Stack.Screen name="Login" component={LoginRegister} options={{headerShown: false}}/>
+        <Stack.Screen name="Profile" component={CustomizeProfile} options={{headerShown: false}}/>
         <Stack.Screen name="Home" component={Home} options={{headerShown: false}}/>
       </Stack.Navigator>
   );

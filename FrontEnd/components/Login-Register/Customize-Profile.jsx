@@ -46,18 +46,18 @@ const CustomizeProfile = () => {
     setIsLoading(true);
     try {
       console.log("Enviando datos");
-      const data = await fetch("http://localhost:8081/check", {
+      const data = await fetch("http://192.168.1.85:8000/check", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
       });
       console.log("Datos enviados");
+      console.log(data);
       if (data.ok) {
         await data.json();
         console.log("Icono cambiado");
       } else {
-        console.log(data);
         console.log("Error al cambiar el icono");
         setError(true);
       }
@@ -72,7 +72,7 @@ const CustomizeProfile = () => {
     if (image !== User) {
       handleIcon();
     }
-    navigation.navigate("Login");
+    // navigation.navigate("Login");
   };
 
   return (
