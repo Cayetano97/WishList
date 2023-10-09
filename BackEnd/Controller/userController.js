@@ -69,8 +69,7 @@ router.post("/register", async (req, res) => {
       email: req.body.email,
       name: req.body.name,
       username: req.body.username,
-      // password: await bcrypt.hash(req.body.password, 10),
-      password: req.body.password,
+      password: await bcrypt.hash(req.body.password, 10),
     });
     const datasaved = await data.save();
     res.status(200).json({ Status: "Success register", datasaved });
