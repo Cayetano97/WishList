@@ -5,8 +5,12 @@ import {
   TextInput,
   Image,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 import BirdIcon from "../../assets/img/animals/BirdMain.png";
+import OpenEye from "../../assets/img/utils/OpenEyePassword.png";
+import CloseEye from "../../assets/img/utils/ClosedEyePassword.png";
 import { useState } from "react";
 import CheckBox from "expo-checkbox";
 import globalstyles from "../../Globalstyles";
@@ -21,6 +25,7 @@ const LoginRegister = () => {
   const [password2, setPassword2] = useState("");
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
+  const [eye, setEye] = useState(true);
   const navigation = useNavigation();
 
   const handleSubmit = async () => {
@@ -109,6 +114,10 @@ const LoginRegister = () => {
     }
   };
 
+  const handleEye = () => {
+    setEye(!eye);
+  };
+
   const handleChangeLog = () => {
     setLogin(true);
     setEmail("");
@@ -116,6 +125,7 @@ const LoginRegister = () => {
     setPassword2("");
     setName("");
     setUsername("");
+    setEye(true);
   };
   const handleChangeReg = () => {
     setLogin(false);
@@ -124,152 +134,175 @@ const LoginRegister = () => {
     setPassword2("");
     setName("");
     setUsername("");
+    setEye(true);
   };
 
   return (
-    <View style={styles.mainLoginRegister}>
-      <Image source={BirdIcon} style={styles.image} />
-      <View>
-        <Text style={styles.title}>WishList</Text>
-      </View>
-      <View style={styles.loginregister}>
-        <TouchableOpacity onPress={handleChangeLog}>
-          <Text style={login ? styles.selected : styles.noselected}>
-            Iniciar sesión
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleChangeReg}>
-          <Text style={login ? styles.noselected : styles.selected}>
-            Registrarse
-          </Text>
-        </TouchableOpacity>
-      </View>
-      {login ? (
-        <View style={styles.input}>
-          <View style={styles.containerinputs}>
-            <TextInput
-              style={[
-                globalstyles.card,
-                globalstyles.input,
-                globalstyles.textInput,
-              ]}
-              value={email}
-              onChangeText={(text) => handleChange(text, "email")}
-              placeholder="Email o nombre de usuario"
-            />
-            <TextInput
-              style={[
-                globalstyles.card,
-                globalstyles.input,
-                globalstyles.textInput,
-              ]}
-              value={password}
-              onChangeText={(text) => handleChange(text, "password")}
-              placeholder="Contraseña"
-            />
+    <ScrollView contentContainerStyle={{ marginBottom: 50 }}>
+      <KeyboardAvoidingView
+        behavior="position"
+        style={styles.mainLoginRegister}
+      >
+        <View style={styles.container}>
+          <Image source={BirdIcon} style={styles.image} />
+          <View>
+            <Text style={styles.title}>WishList</Text>
           </View>
-          <View style={styles.checkbox}>
-            <CheckBox value={isSelected} onValueChange={setSelection} />
-            <Text>Recordar sesión</Text>
-          </View>
-          <View style={styles.boton}>
-            <TouchableOpacity
-              onPress={handleSubmit}
-              style={[globalstyles.button, globalstyles.purpleMainButton]}
-            >
-              <Text
-                style={[
-                  globalstyles.placeholderButton,
-                  globalstyles.placeholderMainButton,
-                ]}
-              >
-                Inicio sesión
-              </Text>
-            </TouchableOpacity>
-            <View style={styles.noaccount}>
-              <Text>¿Aún no tienes cuenta?</Text>
-              <TouchableOpacity onPress={handleChangeReg}>
-                <Text style={styles.botontoreg}>Regístrate</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      ) : (
-        <View style={styles.input}>
-          <TextInput
-            style={[
-              globalstyles.card,
-              globalstyles.input,
-              globalstyles.textInput,
-            ]}
-            placeholder="Email"
-            value={email}
-            onChangeText={(text) => handleChange(text, "email")}
-          />
-          <TextInput
-            style={[
-              globalstyles.card,
-              globalstyles.input,
-              globalstyles.textInput,
-            ]}
-            placeholder="Nombre"
-            value={name}
-            onChangeText={(text) => handleChange(text, "name")}
-          />
-          <TextInput
-            style={[
-              globalstyles.card,
-              globalstyles.input,
-              globalstyles.textInput,
-            ]}
-            placeholder="Nombre de usuario"
-            value={username}
-            onChangeText={(text) => handleChange(text, "username")}
-          />
-          <TextInput
-            style={[
-              globalstyles.card,
-              globalstyles.input,
-              globalstyles.textInput,
-            ]}
-            placeholder="Contraseña"
-            value={password}
-            onChangeText={(text) => handleChange(text, "password")}
-          />
-          <TextInput
-            style={[
-              globalstyles.card,
-              globalstyles.input,
-              globalstyles.textInput,
-            ]}
-            placeholder="Repetir contraseña"
-            value={password2}
-            onChangeText={(text) => handleChange(text, "password2")}
-          />
-          <View style={styles.boton}>
-            <TouchableOpacity
-              onPress={handleRegister}
-              style={[globalstyles.button, globalstyles.purpleMainButton]}
-            >
-              <Text
-                style={[
-                  globalstyles.placeholderButton,
-                  globalstyles.placeholderMainButton,
-                ]}
-              >
-                Regístrate
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.noaccount}>
-            <Text>¿Ya registrado?</Text>
+          <View style={styles.loginregister}>
             <TouchableOpacity onPress={handleChangeLog}>
-              <Text style={styles.botontoreg}>Inicia sesión</Text>
+              <Text style={login ? styles.selected : styles.noselected}>
+                Iniciar sesión
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleChangeReg}>
+              <Text style={login ? styles.noselected : styles.selected}>
+                Registrarse
+              </Text>
             </TouchableOpacity>
           </View>
+          {login ? (
+            <View style={styles.input}>
+              <View style={styles.containerinputs}>
+                <TextInput
+                  style={[
+                    globalstyles.card,
+                    globalstyles.input,
+                    globalstyles.textInput,
+                  ]}
+                  value={email}
+                  onChangeText={(text) => handleChange(text, "email")}
+                  placeholder="Email o nombre de usuario"
+                />
+                <TextInput
+                  style={[
+                    globalstyles.card,
+                    globalstyles.input,
+                    globalstyles.textInput,
+                  ]}
+                  value={password}
+                  onChangeText={(text) => handleChange(text, "password")}
+                  placeholder="Contraseña"
+                  secureTextEntry={eye ? true : false}
+                />
+              </View>
+              <TouchableOpacity onPress={handleEye}>
+                <Image
+                  source={eye ? OpenEye : CloseEye}
+                  style={styles.image2}
+                />
+              </TouchableOpacity>
+              <View style={styles.checkbox}>
+                <CheckBox value={isSelected} onValueChange={setSelection} />
+                <Text>Recordar sesión</Text>
+              </View>
+              <View style={styles.boton}>
+                <TouchableOpacity
+                  onPress={handleSubmit}
+                  style={[globalstyles.button, globalstyles.purpleMainButton]}
+                >
+                  <Text
+                    style={[
+                      globalstyles.placeholderButton,
+                      globalstyles.placeholderMainButton,
+                    ]}
+                  >
+                    Inicio sesión
+                  </Text>
+                </TouchableOpacity>
+                <View style={styles.noaccount}>
+                  <Text>¿Aún no tienes cuenta?</Text>
+                  <TouchableOpacity onPress={handleChangeReg}>
+                    <Text style={styles.botontoreg}>Regístrate</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          ) : (
+            <View style={styles.input}>
+              <TextInput
+                style={[
+                  globalstyles.card,
+                  globalstyles.input,
+                  globalstyles.textInput,
+                ]}
+                placeholder="Email"
+                value={email}
+                onChangeText={(text) => handleChange(text, "email")}
+              />
+              <TextInput
+                style={[
+                  globalstyles.card,
+                  globalstyles.input,
+                  globalstyles.textInput,
+                ]}
+                placeholder="Nombre"
+                value={name}
+                onChangeText={(text) => handleChange(text, "name")}
+              />
+              <TextInput
+                style={[
+                  globalstyles.card,
+                  globalstyles.input,
+                  globalstyles.textInput,
+                ]}
+                placeholder="Nombre de usuario"
+                value={username}
+                onChangeText={(text) => handleChange(text, "username")}
+              />
+              <TextInput
+                style={[
+                  globalstyles.card,
+                  globalstyles.input,
+                  globalstyles.textInput,
+                ]}
+                placeholder="Contraseña"
+                value={password}
+                onChangeText={(text) => handleChange(text, "password")}
+                secureTextEntry={eye ? true : false}
+              />
+              <TouchableOpacity onPress={handleEye}>
+                <Image
+                  source={eye ? OpenEye : CloseEye}
+                  style={styles.image3}
+                />
+              </TouchableOpacity>
+              <TextInput
+                style={[
+                  globalstyles.card,
+                  globalstyles.input,
+                  globalstyles.textInput,
+                ]}
+                placeholder="Repetir contraseña"
+                value={password2}
+                onChangeText={(text) => handleChange(text, "password2")}
+                secureTextEntry={eye ? true : false}
+              />
+              <View style={styles.boton}>
+                <TouchableOpacity
+                  onPress={handleRegister}
+                  style={[globalstyles.button, globalstyles.purpleMainButton]}
+                >
+                  <Text
+                    style={[
+                      globalstyles.placeholderButton,
+                      globalstyles.placeholderMainButton,
+                    ]}
+                  >
+                    Regístrate
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.noaccount}>
+                <Text>¿Ya registrado?</Text>
+                <TouchableOpacity onPress={handleChangeLog}>
+                  <Text style={styles.botontoreg}>Inicia sesión</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
         </View>
-      )}
-    </View>
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 };
 
@@ -284,10 +317,31 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
   },
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   image: {
     marginTop: 50,
     height: 175,
     width: 275,
+  },
+  image2: {
+    height: 60,
+    width: 50,
+    position: "absolute",
+    right: 15,
+    bottom: 22.5,
+    zIndex: 1,
+  },
+  image3: {
+    height: 60,
+    width: 50,
+    position: "absolute",
+    right: 15,
+    bottom: 5,
+    zIndex: 1,
   },
   title: {
     fontSize: 35,
