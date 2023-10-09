@@ -9,29 +9,23 @@ import {
 import BirdIcon from "../../assets/img/animals/BirdMain.png";
 import { useState } from "react";
 import CheckBox from "expo-checkbox";
+import globalstyles from "../../Globalstyles";
+import globals from "../../Global";
+
 const LoginRegister = () => {
   const [isSelected, setSelection] = useState(false);
   const [login, setLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const handleCheck = async () => {
-    try {
-      const response = await fetch("/check");
-      const data = await response.json();
-      if (response.status === 200) {
-        alert("Check BBDD");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const [password2, setPassword2] = useState("");
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
 
   const handleSubmit = async () => {
     if (email !== "" && password !== "") {
       try {
         console.log("try");
-        const response = await fetch("http://192.168.1.85:8000/login", {
+        const response = await fetch(`${globals.IP}/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -39,19 +33,55 @@ const LoginRegister = () => {
           body: JSON.stringify({
             email: email,
             password: password,
-            // username: username !== "" ? username : undefined,
           }),
         });
         console.log(response);
-        const data = await response.json();
         if (response.status === 200) {
           alert("Inicio de sesión correcto");
+          const data = await response.json();
+          console.log(data);
         } else {
           alert("Inicio de sesión incorrecto");
         }
       } catch (error) {
         console.log(error);
-        // alert("Inicio de sesión incorrecto");
+      }
+    } else {
+      alert("Rellene todos los campos");
+    }
+  };
+
+  const handleRegister = async () => {
+    console.log(globals.IP);
+    if (email !== "" && password !== "" && name !== "" && username !== "") {
+      if (password === password2) {
+        try {
+          console.log("try");
+          const response = await fetch(`${globals.IP}/register`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: email,
+              name: name,
+              username: username,
+              password: password,
+            }),
+          });
+          console.log(email, name, username, password);
+          if (response.ok) {
+            await response.json();
+            alert("Registro correcto");
+          } else {
+            console.log(response);
+            alert("Registro incorrecto");
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        alert("Las contraseñas no coinciden");
       }
     } else {
       alert("Rellene todos los campos");
@@ -59,18 +89,40 @@ const LoginRegister = () => {
   };
 
   const handleChange = (text, field) => {
-    if (field === "email") {
-      setEmail(text);
-    } else if (field === "password") {
-      setPassword(text);
+    switch (field) {
+      case "email":
+        setEmail(text);
+        break;
+      case "password":
+        setPassword(text);
+        break;
+      case "password2":
+        setPassword2(text);
+        break;
+      case "name":
+        setName(text);
+        break;
+      case "username":
+        setUsername(text);
+        break;
     }
   };
 
   const handleChangeLog = () => {
     setLogin(true);
+    setEmail("");
+    setPassword("");
+    setPassword2("");
+    setName("");
+    setUsername("");
   };
   const handleChangeReg = () => {
     setLogin(false);
+    setEmail("");
+    setPassword("");
+    setPassword2("");
+    setName("");
+    setUsername("");
   };
 
   return (
@@ -95,12 +147,21 @@ const LoginRegister = () => {
         <View style={styles.input}>
           <View style={styles.containerinputs}>
             <TextInput
-              style={styles.inputtext}
+              style={[
+                globalstyles.card,
+                globalstyles.input,
+                globalstyles.textInput,
+              ]}
               value={email}
               onChangeText={(text) => handleChange(text, "email")}
               placeholder="Email o nombre de usuario"
             />
             <TextInput
+              style={[
+                globalstyles.card,
+                globalstyles.input,
+                globalstyles.textInput,
+              ]}
               value={password}
               onChangeText={(text) => handleChange(text, "password")}
               placeholder="Contraseña"
@@ -111,11 +172,18 @@ const LoginRegister = () => {
             <Text>Recordar sesión</Text>
           </View>
           <View style={styles.boton}>
-            <TouchableOpacity onPress={handleSubmit}>
-              <Text>Inicio sesión</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleCheck}>
-              <Text>Check BBDD</Text>
+            <TouchableOpacity
+              onPress={handleSubmit}
+              style={[globalstyles.button, globalstyles.purpleMainButton]}
+            >
+              <Text
+                style={[
+                  globalstyles.placeholderButton,
+                  globalstyles.placeholderMainButton,
+                ]}
+              >
+                Inicio sesión
+              </Text>
             </TouchableOpacity>
             <View style={styles.noaccount}>
               <Text>¿Aún no tienes cuenta?</Text>
@@ -127,14 +195,69 @@ const LoginRegister = () => {
         </View>
       ) : (
         <View style={styles.input}>
-          <TextInput placeholder="Email" />
-          <TextInput placeholder="Nombre" />
-          <TextInput placeholder="Nombre de usuario" />
-          <TextInput placeholder="Contraseña" />
-          <TextInput placeholder="Repetir contraseña" />
+          <TextInput
+            style={[
+              globalstyles.card,
+              globalstyles.input,
+              globalstyles.textInput,
+            ]}
+            placeholder="Email"
+            value={email}
+            onChangeText={(text) => handleChange(text, "email")}
+          />
+          <TextInput
+            style={[
+              globalstyles.card,
+              globalstyles.input,
+              globalstyles.textInput,
+            ]}
+            placeholder="Nombre"
+            value={name}
+            onChangeText={(text) => handleChange(text, "name")}
+          />
+          <TextInput
+            style={[
+              globalstyles.card,
+              globalstyles.input,
+              globalstyles.textInput,
+            ]}
+            placeholder="Nombre de usuario"
+            value={username}
+            onChangeText={(text) => handleChange(text, "username")}
+          />
+          <TextInput
+            style={[
+              globalstyles.card,
+              globalstyles.input,
+              globalstyles.textInput,
+            ]}
+            placeholder="Contraseña"
+            value={password}
+            onChangeText={(text) => handleChange(text, "password")}
+          />
+          <TextInput
+            style={[
+              globalstyles.card,
+              globalstyles.input,
+              globalstyles.textInput,
+            ]}
+            placeholder="Repetir contraseña"
+            value={password2}
+            onChangeText={(text) => handleChange(text, "password2")}
+          />
           <View style={styles.boton}>
-            <TouchableOpacity>
-              <Text>Regístrate</Text>
+            <TouchableOpacity
+              onPress={handleRegister}
+              style={[globalstyles.button, globalstyles.purpleMainButton]}
+            >
+              <Text
+                style={[
+                  globalstyles.placeholderButton,
+                  globalstyles.placeholderMainButton,
+                ]}
+              >
+                Regístrate
+              </Text>
             </TouchableOpacity>
           </View>
           <View style={styles.noaccount}>
@@ -193,18 +316,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "grey",
   },
-  inputtext: {
-    height: 40,
-  },
   checkbox: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-  },
-  boton: {
-    display: "flex",
-    alignItems: "center",
-    marginTop: 10,
+    marginBottom: 20,
   },
   noaccount: {
     display: "flex",

@@ -4,19 +4,6 @@ const bcrypt = require("bcrypt");
 
 const User = require("../Model/userModel");
 
-// Check database connection
-
-router.get("/check", async (req, res) => {
-  try {
-    const users = await User.find({});
-    console.log(users);
-    res.status(200).json(users);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
-
 // Login
 
 router.post("/login", async (req, res) => {
@@ -25,26 +12,25 @@ router.post("/login", async (req, res) => {
     const data = await User.findOne({ email: req.body.email }).exec();
     console.log(data);
     if (data) {
-      console.log("Entra en data")
-      // const password = await bcrypt.compare(req.body.password, data.password);
-      // if (password) {
+      console.log("Entra en data");
+      const password = await bcrypt.compare(req.body.password, data.password);
+      if (password) {
         res.status(200).json({
           Status: "Success Login",
           data: {
-            // username: data.username || null,
             email: data.email,
             password: data.password,
           },
           error: null,
         });
-      // } else {
-      //   body = req.body;
-      //   res.status(404).json({
-      //     Status: "Error - Failed Login",
-      //     data: null,
-      //     error: "Fallo Login - Email or password incorrect",
-      //   });
-      // }
+      } else {
+        body = req.body;
+        res.status(404).json({
+          Status: "Error - Failed Login",
+          data: null,
+          error: "Fallo Login - Email or password incorrect",
+        });
+      }
     } else {
       res.status(404).json({
         Status: "Error",
