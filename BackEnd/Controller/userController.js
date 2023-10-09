@@ -64,4 +64,27 @@ router.post("/register", async (req, res) => {
   }
 });
 
+// Update User´s info
+
+router.patch("/update/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+    const body = req.body;
+    const data = await User.updateOne(
+      { email: email },
+      {
+        $set: body,
+      },
+      { new: true, upsert: false }
+    );
+    res
+      .status(200)
+      .json({ Status: "Success updating user info", data, error: null });
+  } catch (error) {
+    res
+      .status(401)
+      .json({ Status: "Failed updating user info", data: null, error });
+  }
+});
+
 module.exports = router;

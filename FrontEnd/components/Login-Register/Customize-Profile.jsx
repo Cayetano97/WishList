@@ -17,14 +17,16 @@ import Whale from "../../assets/img/animals/Whale.png";
 
 import { useState } from "react";
 import globalstyles from "../../Globalstyles";
+import globals from "../../Global";
 
-const CustomizeProfile = () => {
+const CustomizeProfile = ({ route }) => {
   const [image, setImage] = useState(Jellyfish);
   const [name, setName] = useState("Usuario");
   const [username, setUsername] = useState("@usuario");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigation = useNavigation();
+  const { email } = route.params;
 
   const animalIcons = [
     { name: "Jellyfish", image: Jellyfish },
@@ -41,38 +43,30 @@ const CustomizeProfile = () => {
     { name: "Bear", image: Bear },
   ];
 
-  const handleIcon = async () => {
-    //Patch para cambiar el icono de usuario
+  //Patch para cambiar el icono de usuario
+
+  const handleCreateProfile = async () => {
     setIsLoading(true);
     try {
-      console.log("Enviando datos");
-      const data = await fetch("http://192.168.1.85:8000/check", {
-        method: "GET",
+      const response = await fetch(`${globals.IP} / ${email}`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          icon: image !== "" ? image : image,
+        }),
       });
-      console.log("Datos enviados");
-      console.log(data);
-      if (data.ok) {
-        await data.json();
-        console.log("Icono cambiado");
+      if (response.ok) {
+        navigation.navigate("Home");
       } else {
         console.log("Error al cambiar el icono");
         setError(true);
       }
     } catch (error) {
       setError(true);
-      console.log(error);
     }
     setIsLoading(false);
-  };
-
-  const handleCreateProfile = () => {
-    if (image !== User) {
-      handleIcon();
-    }
-    // navigation.navigate("Login");
   };
 
   return (

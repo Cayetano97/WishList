@@ -11,6 +11,7 @@ import { useState } from "react";
 import CheckBox from "expo-checkbox";
 import globalstyles from "../../Globalstyles";
 import globals from "../../Global";
+import { useNavigation } from "@react-navigation/native";
 
 const LoginRegister = () => {
   const [isSelected, setSelection] = useState(false);
@@ -20,6 +21,7 @@ const LoginRegister = () => {
   const [password2, setPassword2] = useState("");
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
+  const navigation = useNavigation();
 
   const handleSubmit = async () => {
     if (email !== "" && password !== "") {
@@ -36,10 +38,9 @@ const LoginRegister = () => {
           }),
         });
         console.log(response);
-        if (response.status === 200) {
+        if (response.ok) {
           alert("Inicio de sesión correcto");
-          const data = await response.json();
-          console.log(data);
+          navigation.navigate("CustomizeProfile", { email: email });
         } else {
           alert("Inicio de sesión incorrecto");
         }
