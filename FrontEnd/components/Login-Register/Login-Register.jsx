@@ -10,6 +10,7 @@ import BirdIcon from "../../assets/img/BirdMain.png";
 import { useState } from "react";
 import CheckBox from "expo-checkbox";
 import globalstyles from "../../Globalstyles";
+import globals from "../../Global";
 
 const LoginRegister = () => {
   const [isSelected, setSelection] = useState(false);
@@ -24,7 +25,7 @@ const LoginRegister = () => {
     if (email !== "" && password !== "") {
       try {
         console.log("try");
-        const response = await fetch("http://192.168.1.29:8000/login", {
+        const response = await fetch(`${globals.IP}/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -44,7 +45,6 @@ const LoginRegister = () => {
         }
       } catch (error) {
         console.log(error);
-        // alert("Inicio de sesión incorrecto");
       }
     } else {
       alert("Rellene todos los campos");
@@ -52,11 +52,12 @@ const LoginRegister = () => {
   };
 
   const handleRegister = async () => {
+    console.log(globals.IP);
     if (email !== "" && password !== "" && name !== "" && username !== "") {
       if (password === password2) {
         try {
           console.log("try");
-          const response = await fetch("http://localhost:8081/register", {
+          const response = await fetch(`${globals.IP}/register`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
