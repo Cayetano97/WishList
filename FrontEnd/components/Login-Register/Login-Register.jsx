@@ -31,7 +31,6 @@ const LoginRegister = () => {
   const handleSubmit = async () => {
     if (email !== "" && password !== "") {
       try {
-        console.log("try");
         const response = await fetch(`${globals.IP}/login`, {
           method: "POST",
           headers: {
@@ -42,7 +41,6 @@ const LoginRegister = () => {
             password: password,
           }),
         });
-        console.log(response);
         if (response.ok) {
           const data = await response.json();
           navigation.navigate("Home", { id: data.data.id });

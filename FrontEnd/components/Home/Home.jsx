@@ -65,7 +65,7 @@ const Home = ({ route }) => {
   useEffect(() => {
     const Info = async () => {
       await getUserInfo(id, setData, setIsLoading, setError);
-      await getLists(id, setData, setIsLoading, setError);
+      // await getLists(id, setData, setIsLoading, setError);
     };
     Info();
 

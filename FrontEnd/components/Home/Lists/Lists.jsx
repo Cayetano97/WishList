@@ -9,11 +9,11 @@ const Lists = (props) => {
         <Text style={globalstyles.homeText}>Listas</Text>
         <Text style={globalstyles.seeAllText}>Ver todas</Text>
       </View>
-      {props.data.lists.length === 0 ? (
+      {/* {props.data.lists.length === 0 ? (
         <Text>Aún no tienes ninguna lista. ¡Crea una!</Text>
       ) : (
         <View style={globalstyles.card}></View>
-      )}
+      )} */}
     </View>
   );
 };
