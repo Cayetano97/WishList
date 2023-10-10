@@ -8,11 +8,8 @@ const User = require("../Model/userModel");
 
 router.post("/login", async (req, res) => {
   try {
-    console.log(req.body);
     const data = await User.findOne({ email: req.body.email }).exec();
-    console.log(data);
     if (data) {
-      console.log("Entra en data");
       const password = await bcrypt.compare(req.body.password, data.password);
       if (password) {
         res.status(200).json({

@@ -48,6 +48,29 @@ const userSchema = new Schema(
       ],
       default: "User",
     },
+    wishlist: [
+      {
+        type: Object,
+        properties: {
+          product_name: {
+            type: String,
+            required: true,
+          },
+          url: {
+            type: String,
+          },
+          store: {
+            type: String,
+          },
+          price: {
+            type: Number,
+          },
+          comments: {
+            type: String,
+          }
+        },  timestamps: true // VER SI FUNCIONA TIMESTAMP ASÍ
+      }
+    ],
     list: [
       {
         type: Schema.Types.ObjectId,
@@ -60,28 +83,30 @@ const userSchema = new Schema(
         ref: "collections",
       },
     ],
-    friends: {
-      type: Object,
-      properties: {
-        id_user: {
-          type: mongoose.Schema.Types.ObjectId,
-          required: true,
-          ref: "user",
+    friends: [
+      {
+        type: Object,
+        properties: {
+          id_user: {
+            type: Schema.Types.ObjectId,
+            required: true,
+            ref: "user",
+          },
+          state: {
+            type: String,
+            enum: ["Pendiente", "Aceptado"],
+            default: "Pendiente",
+          },
+          petition_date: {
+            type: Date,
+            default: Date.now(),
+          },
+          accepted_date: {
+            type: Date,
+          },
         },
-        state: {
-          type: String,
-          enum: ["Pendiente", "Aceptado"],
-          default: "Pendiente",
-        },
-        petition_date: {
-          type: Date,
-          default: Date.now(),
-        },
-        accepted_date: {
-          type: Date,
-        },
-      },
-    },
+      }
+    ],
   },
   { timestamps: true }
 );

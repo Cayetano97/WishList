@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Pressable,
+  ActivityIndicator,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import Bear from "../../assets/img/animals/Bear.png";
@@ -16,16 +23,16 @@ import Sheep from "../../assets/img/animals/Sheep.png";
 import Whale from "../../assets/img/animals/Whale.png";
 
 import globalstyles from "../../Globalstyles";
-import globals from "../../Global";
+import { getUserInfo, updateUserInfo } from "../../utils/fetch";
 
 const CustomizeProfile = ({ route }) => {
   const [image, setImage] = useState(Jellyfish);
   const [imageName, setImageName] = useState("Jellyfish");
-  const [name, setName] = useState("Usuario");
-  const [username, setUsername] = useState("@usuario");
-  const [id, setId] = useState(null);
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [data, setData] = useState(null);
   const navigation = useNavigation();
   const { email } = route.params;
 
@@ -44,128 +51,104 @@ const CustomizeProfile = ({ route }) => {
     { name: "Bear", image: Bear },
   ];
 
-  //Fetch functions
+  //Handle functions
 
-  const user = async () => {
-    try {
-      const response = await fetch(`${globals.IP}/userinfo/${email}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setName(data.data.name);
-        setUsername(data.data.username);
-        setId(data.data._id);
-      } else {
-        console.log("Error al obtener información del usuario");
-        setError(true);
-      }
-    } catch (error) {
-      console.log(error);
-      setError(true);
-    }
+  const handleUpdateUserInfo = async (textButton) => {
+    updateUserInfo(textButton, email, imageName, setIsLoading, setError);
+    navigation.navigate("Home", { email: email });
   };
 
-  //Patch para cambiar el icono de usuario
-
-  const handleIcon = async (textButton) => {
-    setIsLoading(true);
-    try {
-      const response = await fetch(`${globals.IP}/update/${email}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          icon: textButton === "Crear perfil" ? imageName : "User",
-        }),
-      });
-      if (response.ok) {
-        navigation.navigate("Home", { id: id });
-      } else {
-        alert("Error al cambiar el icono");
-        setError(true);
-      }
-    } catch (error) {
-      setError(true);
-    }
-    setIsLoading(false);
-  };
-
-  const handleCreateProfile = async () => {
-    handleIcon("Crear perfil");
+  const handleCreate = () => {
+    handleUpdateUserInfo("Crear perfil");
   };
 
   const handleSkip = async () => {
-    handleIcon("omitir");
+    handleUpdateUserInfo("Omitir");
   };
 
-  //UseEffect
+  //UseEffects
+
   useEffect(() => {
-    user();
+    getUserInfo(email, setData, setIsLoading, setError);
   }, []);
 
+  useEffect(() => {
+    setIsLoading(true);
+    if (data !== null) {
+      setName(data.name);
+      setUsername(data.username);
+      setIsLoading(false);
+    }
+  }, [data]);
+
   return (
-    <View style={globalstyles.main}>
-      <Text style={styles.text}>Personaliza tu perfil</Text>
-      <View style={styles.profile}>
-        <View style={styles.imageBackground} />
-        <Image source={image} style={[globalstyles.image, styles.image]} />
-        <View style={styles.username}>
-          <Text style={styles.nameText}>{name}</Text>
-          <Text style={styles.unsernameText}>{username}</Text>
+    <>
+      {isLoading ? (
+        <ActivityIndicator
+          size="large"
+          color="#000"
+          style={globalstyles.spinner}
+        />
+      ) : (
+        <View style={globalstyles.main}>
+          <Text style={styles.text}>Personaliza tu perfil</Text>
+          <View style={styles.profile}>
+            <View style={styles.imageBackground} />
+            <Image source={image} style={[globalstyles.image, styles.image]} />
+            <View style={styles.username}>
+              <Text style={styles.nameText}>{name}</Text>
+              <Text style={styles.unsernameText}>{username}</Text>
+            </View>
+          </View>
+          <View style={[globalstyles.card, styles.icons]}>
+            <Text style={styles.textIcon}>Elige un icono</Text>
+            <View style={styles.animalIcons}>
+              {animalIcons.map((animal) => {
+                return (
+                  <Pressable
+                    key={animal.name}
+                    style={styles.animalCards}
+                    onPress={() => {
+                      setImage(animal.image), setImageName(animal.name);
+                    }}
+                  >
+                    <View style={styles.animalBorder} />
+                    <Image source={animal.image} style={styles.animalImages} />
+                  </Pressable>
+                );
+              })}
+            </View>
+          </View>
+          <Pressable
+            style={[globalstyles.button, globalstyles.purpleMainButton]}
+            onPress={handleCreate}
+          >
+            <Text
+              style={[
+                globalstyles.placeholderButton,
+                globalstyles.placeholderMainButton,
+              ]}
+            >
+              Crear perfil
+            </Text>
+          </Pressable>
+          <Pressable
+            style={[globalstyles.button, globalstyles.purpleButton]}
+            onPress={handleSkip}
+          >
+            <Text
+              style={[
+                globalstyles.placeholderButton,
+                globalstyles.placeholderButton,
+              ]}
+            >
+              Omitir
+            </Text>
+          </Pressable>
         </View>
-      </View>
-      <View style={[globalstyles.card, styles.icons]}>
-        <Text style={styles.textIcon}>Elige un icono</Text>
-        <View style={styles.animalIcons}>
-          {animalIcons.map((animal) => {
-            return (
-              <TouchableOpacity
-                key={animal.name}
-                style={styles.animalCards}
-                onPress={() => {
-                  setImage(animal.image), setImageName(animal.name);
-                }}
-              >
-                <View style={styles.animalBorder} />
-                <Image source={animal.image} style={styles.animalImages} />
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-      </View>
-      <TouchableOpacity
-        style={[globalstyles.button, globalstyles.purpleMainButton]}
-        onPress={handleCreateProfile}
-      >
-        <Text
-          style={[
-            globalstyles.placeholderButton,
-            globalstyles.placeholderMainButton,
-          ]}
-        >
-          Crear perfil
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[globalstyles.button, globalstyles.purpleButton]}
-        onPress={handleSkip}
-      >
-        <Text
-          style={[
-            globalstyles.placeholderButton,
-            globalstyles.placeholderButton,
-          ]}
-        >
-          Omitir
-        </Text>
-      </TouchableOpacity>
-    </View>
+      )}
+      {error && alert("Error al crear el perfil. ¡Inténtalo de nuevo!")}
+    </>
   );
 };
 

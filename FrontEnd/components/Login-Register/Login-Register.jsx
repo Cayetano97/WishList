@@ -26,7 +26,6 @@ const LoginRegister = () => {
   const handleSubmit = async () => {
     if (email !== "" && password !== "") {
       try {
-        console.log("try");
         const response = await fetch(`${globals.IP}/login`, {
           method: "POST",
           headers: {
@@ -37,9 +36,8 @@ const LoginRegister = () => {
             password: password,
           }),
         });
-        console.log(response);
         if (response.ok) {
-          alert("Inicio de sesión correcto");
+          // alert("Inicio de sesión correcto");
           navigation.navigate("CustomizeProfile", { email: email });
         } else {
           alert("Inicio de sesión incorrecto");

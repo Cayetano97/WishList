@@ -39,6 +39,16 @@ const globalstyles = StyleSheet.create({
         color: "#636262",
     },
 
+    lighterGrayText: {
+        fontFamily: "Inter_300Light",
+        fontSize: 15,
+        color: "#636262",
+    },
+
+    spinner: {
+        marginTop: "100%",
+    },
+
     // Button styles
     button: {
         padding: 8,
