@@ -19,7 +19,7 @@
       }
     },
     "web": {
-      "favicon": "./assets/img/BirdMain.png"
+      "favicon": "./assets/img/animals/BirdMain.png"
     }
   }
-} 
+}

@@ -4,9 +4,9 @@ import {
   StyleSheet,
   TextInput,
   Image,
-  TouchableOpacity,
   KeyboardAvoidingView,
   ScrollView,
+  Pressable,
 } from "react-native";
 import BirdIcon from "../../assets/img/animals/BirdMain.png";
 import OpenEye from "../../assets/img/utils/OpenEyePassword.png";
@@ -44,7 +44,6 @@ const LoginRegister = () => {
         });
         console.log(response);
         if (response.ok) {
-          alert("Inicio de sesión correcto");
           navigation.navigate("CustomizeProfile", { email: email });
         } else {
           alert("Inicio de sesión incorrecto");
@@ -60,34 +59,41 @@ const LoginRegister = () => {
   const handleRegister = async () => {
     console.log(globals.IP);
     if (email !== "" && password !== "" && name !== "" && username !== "") {
-      if (password === password2) {
-        try {
-          console.log("try");
-          const response = await fetch(`${globals.IP}/register`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email: email,
-              name: name,
-              username: username,
-              password: password,
-            }),
-          });
-          console.log(email, name, username, password);
-          if (response.ok) {
-            await response.json();
-            alert("Registro correcto");
-          } else {
-            console.log(response);
-            alert("Registro incorrecto");
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const isValidEmail = emailRegex.test(email);
+
+      if (isValidEmail) {
+        if (password === password2) {
+          try {
+            console.log("try");
+            const response = await fetch(`${globals.IP}/register`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                email: email,
+                name: name,
+                username: username,
+                password: password,
+              }),
+            });
+            console.log(email, name, username, password);
+            if (response.ok) {
+              await response.json();
+              alert("Registro correcto");
+            } else {
+              console.log(response);
+              alert("Registro incorrecto");
+            }
+          } catch (error) {
+            console.log(error);
           }
-        } catch (error) {
-          console.log(error);
+        } else {
+          alert("Las contraseñas no coinciden");
         }
       } else {
-        alert("Las contraseñas no coinciden");
+        alert("Correo electrónico no válido");
       }
     } else {
       alert("Rellene todos los campos");
@@ -149,16 +155,16 @@ const LoginRegister = () => {
             <Text style={styles.title}>WishList</Text>
           </View>
           <View style={styles.loginregister}>
-            <TouchableOpacity onPress={handleChangeLog}>
+            <Pressable onPress={handleChangeLog}>
               <Text style={login ? styles.selected : styles.noselected}>
                 Iniciar sesión
               </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleChangeReg}>
+            </Pressable>
+            <Pressable onPress={handleChangeReg}>
               <Text style={login ? styles.noselected : styles.selected}>
                 Registrarse
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
           {login ? (
             <View style={styles.input}>
@@ -172,6 +178,7 @@ const LoginRegister = () => {
                   value={email}
                   onChangeText={(text) => handleChange(text, "email")}
                   placeholder="Email o nombre de usuario"
+                  inputMode="email"
                 />
                 <TextInput
                   style={[
@@ -185,18 +192,22 @@ const LoginRegister = () => {
                   secureTextEntry={eye ? true : false}
                 />
               </View>
-              <TouchableOpacity onPress={handleEye}>
+              <Pressable onPress={handleEye}>
                 <Image
                   source={eye ? OpenEye : CloseEye}
                   style={styles.image2}
                 />
-              </TouchableOpacity>
+              </Pressable>
               <View style={styles.checkbox}>
-                <CheckBox value={isSelected} onValueChange={setSelection} />
+                <CheckBox
+                  value={isSelected}
+                  onValueChange={setSelection}
+                  style={styles.boxcheckbox}
+                />
                 <Text>Recordar sesión</Text>
               </View>
               <View style={styles.boton}>
-                <TouchableOpacity
+                <Pressable
                   onPress={handleSubmit}
                   style={[globalstyles.button, globalstyles.purpleMainButton]}
                 >
@@ -208,12 +219,12 @@ const LoginRegister = () => {
                   >
                     Inicio sesión
                   </Text>
-                </TouchableOpacity>
+                </Pressable>
                 <View style={styles.noaccount}>
                   <Text>¿Aún no tienes cuenta?</Text>
-                  <TouchableOpacity onPress={handleChangeReg}>
+                  <Pressable onPress={handleChangeReg}>
                     <Text style={styles.botontoreg}>Regístrate</Text>
-                  </TouchableOpacity>
+                  </Pressable>
                 </View>
               </View>
             </View>
@@ -228,6 +239,7 @@ const LoginRegister = () => {
                 placeholder="Email"
                 value={email}
                 onChangeText={(text) => handleChange(text, "email")}
+                inputMode="email"
               />
               <TextInput
                 style={[
@@ -260,12 +272,12 @@ const LoginRegister = () => {
                 onChangeText={(text) => handleChange(text, "password")}
                 secureTextEntry={eye ? true : false}
               />
-              <TouchableOpacity onPress={handleEye}>
+              <Pressable onPress={handleEye}>
                 <Image
                   source={eye ? OpenEye : CloseEye}
                   style={styles.image3}
                 />
-              </TouchableOpacity>
+              </Pressable>
               <TextInput
                 style={[
                   globalstyles.card,
@@ -277,8 +289,14 @@ const LoginRegister = () => {
                 onChangeText={(text) => handleChange(text, "password2")}
                 secureTextEntry={eye ? true : false}
               />
+              <Pressable onPress={handleEye}>
+                <Image
+                  source={eye ? OpenEye : CloseEye}
+                  style={styles.image3}
+                />
+              </Pressable>
               <View style={styles.boton}>
-                <TouchableOpacity
+                <Pressable
                   onPress={handleRegister}
                   style={[globalstyles.button, globalstyles.purpleMainButton]}
                 >
@@ -290,13 +308,13 @@ const LoginRegister = () => {
                   >
                     Regístrate
                   </Text>
-                </TouchableOpacity>
+                </Pressable>
               </View>
               <View style={styles.noaccount}>
                 <Text>¿Ya registrado?</Text>
-                <TouchableOpacity onPress={handleChangeLog}>
+                <Pressable onPress={handleChangeLog}>
                   <Text style={styles.botontoreg}>Inicia sesión</Text>
-                </TouchableOpacity>
+                </Pressable>
               </View>
             </View>
           )}
@@ -310,8 +328,6 @@ export default LoginRegister;
 
 const styles = StyleSheet.create({
   mainLoginRegister: {
-    height: "100%",
-    width: "100%",
     backgroundColor: "#F7F7F7",
     display: "flex",
     flexDirection: "column",
@@ -321,9 +337,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    width: "100%",
   },
   image: {
-    marginTop: 50,
+    marginTop: 20,
     height: 175,
     width: 275,
   },
@@ -348,11 +365,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   loginregister: {
+    // backgroundColor: "green",
     display: "flex",
     flexDirection: "row",
-    width: "80%",
+    width: "65%",
     justifyContent: "space-between",
     marginTop: 30,
+    // marginRight: -50,
   },
   input: {
     width: "90%",
@@ -376,6 +395,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 20,
+  },
+  boxcheckbox: {
+    marginRight: 10,
   },
   noaccount: {
     display: "flex",
