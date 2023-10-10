@@ -23,18 +23,16 @@ import Sheep from "../../assets/img/animals/Sheep.png";
 import Whale from "../../assets/img/animals/Whale.png";
 
 import globalstyles from "../../Globalstyles";
-import { getUserInfo, updateUserInfo } from "../../utils/fetch";
+import { getUserInfo, updateUserInfo } from "../../fetch/UserFetch";
 
 const CustomizeProfile = ({ route }) => {
   const [image, setImage] = useState(Jellyfish);
   const [imageName, setImageName] = useState("Jellyfish");
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
   const navigation = useNavigation();
-  const { email } = route.params;
+  const { id } = route.params;
 
   const animalIcons = [
     { name: "Jellyfish", image: Jellyfish },
@@ -54,8 +52,8 @@ const CustomizeProfile = ({ route }) => {
   //Handle functions
 
   const handleUpdateUserInfo = async (textButton) => {
-    updateUserInfo(textButton, email, imageName, setIsLoading, setError);
-    navigation.navigate("Home", { email: email });
+    updateUserInfo(textButton, id, imageName, setIsLoading, setError);
+    navigation.navigate("Home", { id: id });
   };
 
   const handleCreate = () => {
@@ -69,14 +67,12 @@ const CustomizeProfile = ({ route }) => {
   //UseEffects
 
   useEffect(() => {
-    getUserInfo(email, setData, setIsLoading, setError);
-  }, []);
+    const userInfo = async () => {
+      await getUserInfo(id, setData, setIsLoading, setError);
+    };
+    userInfo();
 
-  useEffect(() => {
-    setIsLoading(true);
-    if (data !== null) {
-      setName(data.name);
-      setUsername(data.username);
+    if (data !== null && data.name !== null && data.username !== null) {
       setIsLoading(false);
     }
   }, [data]);
@@ -96,8 +92,8 @@ const CustomizeProfile = ({ route }) => {
             <View style={styles.imageBackground} />
             <Image source={image} style={[globalstyles.image, styles.image]} />
             <View style={styles.username}>
-              <Text style={styles.nameText}>{name}</Text>
-              <Text style={styles.unsernameText}>{username}</Text>
+              <Text style={styles.nameText}>{data.name}</Text>
+              <Text style={styles.unsernameText}>{data.username}</Text>
             </View>
           </View>
           <View style={[globalstyles.card, styles.icons]}>

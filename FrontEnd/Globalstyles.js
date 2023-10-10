@@ -43,6 +43,29 @@ const globalstyles = StyleSheet.create({
         fontFamily: "Inter_300Light",
         fontSize: 15,
         color: "#636262",
+        paddingVertical: 5,
+    },
+
+    homeHeader: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        paddingVertical: 5,
+    },
+
+    homeText: {
+        fontSize: 22,
+        fontFamily: "Inter_500Medium",
+        paddingVertical: 5,
+    },
+
+    seeAllText: {
+        color: "#fff",
+        paddingVertical: 5,
+        paddingHorizontal: 15,
+        backgroundColor: "#000",
+        borderRadius: 10,
     },
 
     spinner: {

@@ -15,6 +15,7 @@ router.post("/login", async (req, res) => {
         res.status(200).json({
           Status: "Success Login",
           data: {
+            id: data._id,
             email: data.email,
             password: data.password,
           },
@@ -63,12 +64,12 @@ router.post("/register", async (req, res) => {
 
 // Update User´s info
 
-router.patch("/update/:email", async (req, res) => {
+router.patch("/update/:id", async (req, res) => {
   try {
-    const email = req.params.email;
+    const id = req.params.id;
     const body = req.body;
     const data = await User.updateOne(
-      { email: email },
+      { _id: id },
       {
         $set: body,
       },
@@ -86,10 +87,10 @@ router.patch("/update/:email", async (req, res) => {
 
 // Get user info
 
-router.get("/userinfo/:email", async (req, res) => {
+router.get("/userinfo/:id", async (req, res) => {
   try {
-    const email = req.params.email;
-    const data = await User.findOne({ email: email }).exec();
+    const id = req.params.id;
+    const data = await User.findOne({ _id: id }).exec();
     res.status(200).json({ Status: "Success getting user info", data });
   } catch (error) {
     res.status(401).json({ Status: "Failed getting user info", data: null });

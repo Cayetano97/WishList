@@ -4,9 +4,13 @@ import {
   StyleSheet,
   TextInput,
   Image,
-  TouchableOpacity,
+  KeyboardAvoidingView,
+  ScrollView,
+  Pressable,
 } from "react-native";
 import BirdIcon from "../../assets/img/animals/BirdMain.png";
+import OpenEye from "../../assets/img/utils/OpenEyePassword.png";
+import CloseEye from "../../assets/img/utils/ClosedEyePassword.png";
 import { useState } from "react";
 import CheckBox from "expo-checkbox";
 import globalstyles from "../../Globalstyles";
@@ -21,11 +25,13 @@ const LoginRegister = () => {
   const [password2, setPassword2] = useState("");
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
+  const [eye, setEye] = useState(true);
   const navigation = useNavigation();
 
   const handleSubmit = async () => {
     if (email !== "" && password !== "") {
       try {
+        console.log("try");
         const response = await fetch(`${globals.IP}/login`, {
           method: "POST",
           headers: {
@@ -36,9 +42,10 @@ const LoginRegister = () => {
             password: password,
           }),
         });
+        console.log(response);
         if (response.ok) {
-          // alert("Inicio de sesión correcto");
-          navigation.navigate("CustomizeProfile", { email: email });
+          const data = await response.json();
+          navigation.navigate("Home", { id: data.data.id });
         } else {
           alert("Inicio de sesión incorrecto");
         }
@@ -51,36 +58,47 @@ const LoginRegister = () => {
   };
 
   const handleRegister = async () => {
-    console.log(globals.IP);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,16}$/;
+    const isValidEmail = emailRegex.test(email);
+    const isValidPassword = passwordRegex.test(password);
     if (email !== "" && password !== "" && name !== "" && username !== "") {
-      if (password === password2) {
-        try {
-          console.log("try");
-          const response = await fetch(`${globals.IP}/register`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email: email,
-              name: name,
-              username: username,
-              password: password,
-            }),
-          });
-          console.log(email, name, username, password);
-          if (response.ok) {
-            await response.json();
-            alert("Registro correcto");
+      console.log(password);
+      console.log(isValidPassword);
+      if (isValidEmail) {
+        if (isValidPassword) {
+          if (password === password2) {
+            try {
+              console.log("try");
+              const response = await fetch(`${globals.IP}/register`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  email: email,
+                  name: name,
+                  username: username,
+                  password: password,
+                }),
+              });
+              if (response.ok) {
+                const data = await response.json();
+                navigation.navigate("CustomizeProfile", { id: data.data.id });
+              } else {
+                alert("Registro incorrecto");
+              }
+            } catch (error) {
+              console.log(error);
+            }
           } else {
-            console.log(response);
-            alert("Registro incorrecto");
+            alert("Las contraseñas no coinciden");
           }
-        } catch (error) {
-          console.log(error);
+        } else {
+          alert("La contraseña no es válida");
         }
       } else {
-        alert("Las contraseñas no coinciden");
+        alert("Correo electrónico no válido");
       }
     } else {
       alert("Rellene todos los campos");
@@ -99,12 +117,22 @@ const LoginRegister = () => {
         setPassword2(text);
         break;
       case "name":
-        setName(text);
+        setName(text.charAt(0).toUpperCase() + text.slice(1));
         break;
       case "username":
-        setUsername(text);
+        if (text.startsWith("@")) {
+          setUsername(text);
+        } else if (text === "") {
+          setUsername("");
+        } else {
+          setUsername("@" + text);
+        }
         break;
     }
+  };
+
+  const handleEye = () => {
+    setEye(!eye);
   };
 
   const handleChangeLog = () => {
@@ -114,6 +142,7 @@ const LoginRegister = () => {
     setPassword2("");
     setName("");
     setUsername("");
+    setEye(true);
   };
   const handleChangeReg = () => {
     setLogin(false);
@@ -122,152 +151,187 @@ const LoginRegister = () => {
     setPassword2("");
     setName("");
     setUsername("");
+    setEye(true);
   };
 
   return (
-    <View style={styles.mainLoginRegister}>
-      <Image source={BirdIcon} style={styles.image} />
-      <View>
-        <Text style={styles.title}>WishList</Text>
-      </View>
-      <View style={styles.loginregister}>
-        <TouchableOpacity onPress={handleChangeLog}>
-          <Text style={login ? styles.selected : styles.noselected}>
-            Iniciar sesión
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleChangeReg}>
-          <Text style={login ? styles.noselected : styles.selected}>
-            Registrarse
-          </Text>
-        </TouchableOpacity>
-      </View>
-      {login ? (
-        <View style={styles.input}>
-          <View style={styles.containerinputs}>
-            <TextInput
-              style={[
-                globalstyles.card,
-                globalstyles.input,
-                globalstyles.textInput,
-              ]}
-              value={email}
-              onChangeText={(text) => handleChange(text, "email")}
-              placeholder="Email o nombre de usuario"
-            />
-            <TextInput
-              style={[
-                globalstyles.card,
-                globalstyles.input,
-                globalstyles.textInput,
-              ]}
-              value={password}
-              onChangeText={(text) => handleChange(text, "password")}
-              placeholder="Contraseña"
-            />
+    <ScrollView contentContainerStyle={{ marginBottom: 50 }}>
+      <KeyboardAvoidingView
+        behavior="position"
+        style={styles.mainLoginRegister}
+      >
+        <View style={styles.container}>
+          <Image source={BirdIcon} style={styles.image} />
+          <View>
+            <Text style={styles.title}>WishList</Text>
           </View>
-          <View style={styles.checkbox}>
-            <CheckBox value={isSelected} onValueChange={setSelection} />
-            <Text>Recordar sesión</Text>
-          </View>
-          <View style={styles.boton}>
-            <TouchableOpacity
-              onPress={handleSubmit}
-              style={[globalstyles.button, globalstyles.purpleMainButton]}
-            >
-              <Text
-                style={[
-                  globalstyles.placeholderButton,
-                  globalstyles.placeholderMainButton,
-                ]}
-              >
-                Inicio sesión
+          <View style={styles.loginregister}>
+            <Pressable onPress={handleChangeLog}>
+              <Text style={login ? styles.selected : styles.noselected}>
+                Iniciar sesión
               </Text>
-            </TouchableOpacity>
-            <View style={styles.noaccount}>
-              <Text>¿Aún no tienes cuenta?</Text>
-              <TouchableOpacity onPress={handleChangeReg}>
-                <Text style={styles.botontoreg}>Regístrate</Text>
-              </TouchableOpacity>
+            </Pressable>
+            <Pressable onPress={handleChangeReg}>
+              <Text style={login ? styles.noselected : styles.selected}>
+                Registrarse
+              </Text>
+            </Pressable>
+          </View>
+          {login ? (
+            <View style={styles.input}>
+              <View style={styles.containerinputs}>
+                <TextInput
+                  style={[
+                    globalstyles.card,
+                    globalstyles.input,
+                    globalstyles.textInput,
+                  ]}
+                  value={email}
+                  onChangeText={(text) => handleChange(text, "email")}
+                  placeholder="Email o nombre de usuario"
+                  inputMode="email"
+                />
+                <TextInput
+                  style={[
+                    globalstyles.card,
+                    globalstyles.input,
+                    globalstyles.textInput,
+                  ]}
+                  value={password}
+                  onChangeText={(text) => handleChange(text, "password")}
+                  placeholder="Contraseña"
+                  secureTextEntry={eye ? true : false}
+                />
+              </View>
+              <Pressable onPress={handleEye}>
+                <Image
+                  source={eye ? OpenEye : CloseEye}
+                  style={styles.image2}
+                />
+              </Pressable>
+              <View style={styles.checkbox}>
+                <CheckBox
+                  value={isSelected}
+                  onValueChange={setSelection}
+                  style={styles.boxcheckbox}
+                />
+                <Text>Recordar sesión</Text>
+              </View>
+              <View style={styles.boton}>
+                <Pressable
+                  onPress={handleSubmit}
+                  style={[globalstyles.button, globalstyles.purpleMainButton]}
+                >
+                  <Text
+                    style={[
+                      globalstyles.placeholderButton,
+                      globalstyles.placeholderMainButton,
+                    ]}
+                  >
+                    Inicio sesión
+                  </Text>
+                </Pressable>
+                <View style={styles.noaccount}>
+                  <Text>¿Aún no tienes cuenta?</Text>
+                  <Pressable onPress={handleChangeReg}>
+                    <Text style={styles.botontoreg}>Regístrate</Text>
+                  </Pressable>
+                </View>
+              </View>
             </View>
-          </View>
-        </View>
-      ) : (
-        <View style={styles.input}>
-          <TextInput
-            style={[
-              globalstyles.card,
-              globalstyles.input,
-              globalstyles.textInput,
-            ]}
-            placeholder="Email"
-            value={email}
-            onChangeText={(text) => handleChange(text, "email")}
-          />
-          <TextInput
-            style={[
-              globalstyles.card,
-              globalstyles.input,
-              globalstyles.textInput,
-            ]}
-            placeholder="Nombre"
-            value={name}
-            onChangeText={(text) => handleChange(text, "name")}
-          />
-          <TextInput
-            style={[
-              globalstyles.card,
-              globalstyles.input,
-              globalstyles.textInput,
-            ]}
-            placeholder="Nombre de usuario"
-            value={username}
-            onChangeText={(text) => handleChange(text, "username")}
-          />
-          <TextInput
-            style={[
-              globalstyles.card,
-              globalstyles.input,
-              globalstyles.textInput,
-            ]}
-            placeholder="Contraseña"
-            value={password}
-            onChangeText={(text) => handleChange(text, "password")}
-          />
-          <TextInput
-            style={[
-              globalstyles.card,
-              globalstyles.input,
-              globalstyles.textInput,
-            ]}
-            placeholder="Repetir contraseña"
-            value={password2}
-            onChangeText={(text) => handleChange(text, "password2")}
-          />
-          <View style={styles.boton}>
-            <TouchableOpacity
-              onPress={handleRegister}
-              style={[globalstyles.button, globalstyles.purpleMainButton]}
-            >
-              <Text
+          ) : (
+            <View style={styles.input}>
+              <TextInput
                 style={[
-                  globalstyles.placeholderButton,
-                  globalstyles.placeholderMainButton,
+                  globalstyles.card,
+                  globalstyles.input,
+                  globalstyles.textInput,
                 ]}
-              >
-                Regístrate
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.noaccount}>
-            <Text>¿Ya registrado?</Text>
-            <TouchableOpacity onPress={handleChangeLog}>
-              <Text style={styles.botontoreg}>Inicia sesión</Text>
-            </TouchableOpacity>
-          </View>
+                placeholder="Email"
+                value={email}
+                onChangeText={(text) => handleChange(text, "email")}
+                inputMode="email"
+              />
+              <TextInput
+                style={[
+                  globalstyles.card,
+                  globalstyles.input,
+                  globalstyles.textInput,
+                ]}
+                placeholder="Nombre"
+                value={name}
+                onChangeText={(text) => handleChange(text, "name")}
+              />
+              <TextInput
+                style={[
+                  globalstyles.card,
+                  globalstyles.input,
+                  globalstyles.textInput,
+                ]}
+                placeholder="Nombre de usuario"
+                value={username}
+                onChangeText={(text) => handleChange(text, "username")}
+              />
+              <TextInput
+                style={[
+                  globalstyles.card,
+                  globalstyles.input,
+                  globalstyles.textInput,
+                ]}
+                placeholder="Contraseña"
+                value={password}
+                onChangeText={(text) => handleChange(text, "password")}
+                secureTextEntry={eye ? true : false}
+              />
+              <Pressable onPress={handleEye}>
+                <Image
+                  source={eye ? OpenEye : CloseEye}
+                  style={styles.image3}
+                />
+              </Pressable>
+              <TextInput
+                style={[
+                  globalstyles.card,
+                  globalstyles.input,
+                  globalstyles.textInput,
+                ]}
+                placeholder="Repetir contraseña"
+                value={password2}
+                onChangeText={(text) => handleChange(text, "password2")}
+                secureTextEntry={eye ? true : false}
+              />
+              <Pressable onPress={handleEye}>
+                <Image
+                  source={eye ? OpenEye : CloseEye}
+                  style={styles.image3}
+                />
+              </Pressable>
+              <View style={styles.boton}>
+                <Pressable
+                  onPress={handleRegister}
+                  style={[globalstyles.button, globalstyles.purpleMainButton]}
+                >
+                  <Text
+                    style={[
+                      globalstyles.placeholderButton,
+                      globalstyles.placeholderMainButton,
+                    ]}
+                  >
+                    Regístrate
+                  </Text>
+                </Pressable>
+              </View>
+              <View style={styles.noaccount}>
+                <Text>¿Ya registrado?</Text>
+                <Pressable onPress={handleChangeLog}>
+                  <Text style={styles.botontoreg}>Inicia sesión</Text>
+                </Pressable>
+              </View>
+            </View>
+          )}
         </View>
-      )}
-    </View>
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 };
 
@@ -275,17 +339,37 @@ export default LoginRegister;
 
 const styles = StyleSheet.create({
   mainLoginRegister: {
-    height: "100%",
-    width: "100%",
     backgroundColor: "#F7F7F7",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
   },
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+  },
   image: {
-    marginTop: 50,
+    marginTop: 20,
     height: 175,
     width: 275,
+  },
+  image2: {
+    height: 60,
+    width: 50,
+    position: "absolute",
+    right: 5,
+    bottom: 22.5,
+    zIndex: 1,
+  },
+  image3: {
+    height: 60,
+    width: 50,
+    position: "absolute",
+    right: 5,
+    bottom: 3,
+    zIndex: 1,
   },
   title: {
     fontSize: 35,
@@ -294,7 +378,7 @@ const styles = StyleSheet.create({
   loginregister: {
     display: "flex",
     flexDirection: "row",
-    width: "80%",
+    width: "65%",
     justifyContent: "space-between",
     marginTop: 30,
   },
@@ -320,6 +404,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 20,
+  },
+  boxcheckbox: {
+    marginRight: 10,
   },
   noaccount: {
     display: "flex",
