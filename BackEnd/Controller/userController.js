@@ -16,8 +16,12 @@ router.post("/login", async (req, res) => {
           Status: "Success Login",
           data: {
             id: data._id,
+            name: data.name,
             email: data.email,
             password: data.password,
+            username: data.username,
+            icon: data.icon,
+            wishlist: data.wishlist,
           },
           error: null,
         });
@@ -121,8 +125,6 @@ router.get("/userinfo/:id", async (req, res) => {
   } catch (error) {
     res.status(401).json({ Status: "Failed getting user info", data: null });
   }
-
-
 });
 
 module.exports = router;

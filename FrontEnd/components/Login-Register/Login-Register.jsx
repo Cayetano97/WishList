@@ -15,6 +15,7 @@ import { useState } from "react";
 import CheckBox from "expo-checkbox";
 import globalstyles from "../../Globalstyles";
 import globals from "../../Global";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 
 const LoginRegister = () => {
@@ -29,9 +30,14 @@ const LoginRegister = () => {
   const navigation = useNavigation();
 
   const handleSubmit = async () => {
+    if (isSelected) {
+      setEmail(JSON.parse(await AsyncStorage.getItem("data_response")).email);
+      setPassword(
+        JSON.parse(await AsyncStorage.getItem("data_response")).password
+      );
+    }
     if (email !== "" && password !== "") {
       try {
-        console.log("try");
         const response = await fetch(`${globals.IP}/login`, {
           method: "POST",
           headers: {
@@ -42,10 +48,15 @@ const LoginRegister = () => {
             password: password,
           }),
         });
-        console.log(response);
         if (response.ok) {
           const data = await response.json();
           navigation.navigate("Home", { id: data.data.id });
+          if (isSelected) {
+            await AsyncStorage.setItem(
+              "data_response",
+              JSON.stringify(data.data)
+            );
+          }
         } else {
           alert("Inicio de sesión incorrecto");
         }
@@ -63,13 +74,10 @@ const LoginRegister = () => {
     const isValidEmail = emailRegex.test(email);
     const isValidPassword = passwordRegex.test(password);
     if (email !== "" && password !== "" && name !== "" && username !== "") {
-      console.log(password);
-      console.log(isValidPassword);
       if (isValidEmail) {
         if (isValidPassword) {
           if (password === password2) {
             try {
-              console.log("try");
               const response = await fetch(`${globals.IP}/register`, {
                 method: "POST",
                 headers: {
