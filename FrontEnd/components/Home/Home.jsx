@@ -32,6 +32,7 @@ import User from "../../assets/img/animals/User.png";
 
 const Home = ({ route }) => {
   const [data, setData] = useState(null);
+  const [dataLists, setDataLists] = useState(null);
   const [iconImage, setIconImage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -65,7 +66,6 @@ const Home = ({ route }) => {
   useEffect(() => {
     const Info = async () => {
       await getUserInfo(id, setData, setIsLoading, setError);
-      // await getLists(id, setData, setIsLoading, setError);
     };
     Info();
 
@@ -74,6 +74,14 @@ const Home = ({ route }) => {
       setIsLoading(false);
     }
   }, [data]);
+
+  useEffect(() => {
+    const Lists = async () => {
+      await getLists(id, setDataLists, setIsLoading, setError);
+    };
+    Lists();
+    console.log(dataLists);
+  }, []);
 
   return (
     <>
@@ -90,7 +98,7 @@ const Home = ({ route }) => {
           </Pressable>
           <Profile data={data} iconImage={iconImage} />
           <Wishlist data={data} />
-          <Lists />
+          <Lists data={dataLists} />
           <Collections />
         </ScrollView>
       )}
