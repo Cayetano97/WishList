@@ -44,7 +44,8 @@ const LoginRegister = () => {
         });
         console.log(response);
         if (response.ok) {
-          navigation.navigate("CustomizeProfile", { email: email });
+          const data = await response.json();
+          navigation.navigate("Home", { id: data.data.id });
         } else {
           alert("Inicio de sesión incorrecto");
         }
@@ -57,40 +58,44 @@ const LoginRegister = () => {
   };
 
   const handleRegister = async () => {
-    console.log(globals.IP);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,16}$/;
+    const isValidEmail = emailRegex.test(email);
+    const isValidPassword = passwordRegex.test(password);
     if (email !== "" && password !== "" && name !== "" && username !== "") {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      const isValidEmail = emailRegex.test(email);
-
+      console.log(password);
+      console.log(isValidPassword);
       if (isValidEmail) {
-        if (password === password2) {
-          try {
-            console.log("try");
-            const response = await fetch(`${globals.IP}/register`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                email: email,
-                name: name,
-                username: username,
-                password: password,
-              }),
-            });
-            console.log(email, name, username, password);
-            if (response.ok) {
-              await response.json();
-              alert("Registro correcto");
-            } else {
-              console.log(response);
-              alert("Registro incorrecto");
+        if (isValidPassword) {
+          if (password === password2) {
+            try {
+              console.log("try");
+              const response = await fetch(`${globals.IP}/register`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  email: email,
+                  name: name,
+                  username: username,
+                  password: password,
+                }),
+              });
+              if (response.ok) {
+                const data = await response.json();
+                navigation.navigate("CustomizeProfile", { id: data.data.id });
+              } else {
+                alert("Registro incorrecto");
+              }
+            } catch (error) {
+              console.log(error);
             }
-          } catch (error) {
-            console.log(error);
+          } else {
+            alert("Las contraseñas no coinciden");
           }
         } else {
-          alert("Las contraseñas no coinciden");
+          alert("La contraseña no es válida");
         }
       } else {
         alert("Correo electrónico no válido");
@@ -112,10 +117,16 @@ const LoginRegister = () => {
         setPassword2(text);
         break;
       case "name":
-        setName(text);
+        setName(text.charAt(0).toUpperCase() + text.slice(1));
         break;
       case "username":
-        setUsername(text);
+        if (text.startsWith("@")) {
+          setUsername(text);
+        } else if (text === "") {
+          setUsername("");
+        } else {
+          setUsername("@" + text);
+        }
         break;
     }
   };
@@ -348,7 +359,7 @@ const styles = StyleSheet.create({
     height: 60,
     width: 50,
     position: "absolute",
-    right: 15,
+    right: 5,
     bottom: 22.5,
     zIndex: 1,
   },
@@ -356,8 +367,8 @@ const styles = StyleSheet.create({
     height: 60,
     width: 50,
     position: "absolute",
-    right: 15,
-    bottom: 5,
+    right: 5,
+    bottom: 3,
     zIndex: 1,
   },
   title: {
@@ -365,13 +376,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   loginregister: {
-    // backgroundColor: "green",
     display: "flex",
     flexDirection: "row",
     width: "65%",
     justifyContent: "space-between",
     marginTop: 30,
-    // marginRight: -50,
   },
   input: {
     width: "90%",

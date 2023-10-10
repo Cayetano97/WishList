@@ -60,28 +60,30 @@ const userSchema = new Schema(
         ref: "collections",
       },
     ],
-    friends: {
-      type: Object,
-      properties: {
-        id_user: {
-          type: mongoose.Schema.Types.ObjectId,
-          required: true,
-          ref: "user",
-        },
-        state: {
-          type: String,
-          enum: ["Pendiente", "Aceptado"],
-          default: "Pendiente",
-        },
-        petition_date: {
-          type: Date,
-          default: Date.now(),
-        },
-        accepted_date: {
-          type: Date,
+    friends: [
+      {
+        type: Object,
+        properties: {
+          id_user: {
+            type: Schema.Types.ObjectId,
+            required: true,
+            ref: "user",
+          },
+          state: {
+            type: String,
+            enum: ["Pendiente", "Aceptado"],
+            default: "Pendiente",
+          },
+          petition_date: {
+            type: Date,
+            default: Date.now(),
+          },
+          accepted_date: {
+            type: Date,
+          },
         },
       },
-    },
+    ],
   },
   { timestamps: true }
 );
