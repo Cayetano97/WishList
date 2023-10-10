@@ -9,9 +9,7 @@ const User = require("../Model/userModel");
 router.post("/login", async (req, res) => {
   try {
     const data = await User.findOne({ email: req.body.email }).exec();
-    console.log(data);
     if (data) {
-      console.log("Entra en data");
       const password = await bcrypt.compare(req.body.password, data.password);
       if (password) {
         res.status(200).json({
@@ -92,12 +90,12 @@ router.post("/register", async (req, res) => {
 
 // Update User´s info
 
-router.patch("/update/:email", async (req, res) => {
+router.patch("/update/:id", async (req, res) => {
   try {
-    const email = req.params.email;
+    const id = req.params.id;
     const body = req.body;
     const data = await User.updateOne(
-      { email: email },
+      { _id: id },
       {
         $set: body,
       },
@@ -111,6 +109,20 @@ router.patch("/update/:email", async (req, res) => {
       .status(401)
       .json({ Status: "Failed updating user info", data: null, error });
   }
+});
+
+// Get user info
+
+router.get("/userinfo/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const data = await User.findOne({ _id: id }).exec();
+    res.status(200).json({ Status: "Success getting user info", data });
+  } catch (error) {
+    res.status(401).json({ Status: "Failed getting user info", data: null });
+  }
+
+
 });
 
 module.exports = router;

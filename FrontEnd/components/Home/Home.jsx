@@ -1,88 +1,110 @@
 import globalstyles from "../../Globalstyles";
-import { ScrollView, View, Text, Image, TouchableOpacity } from "react-native";
+import { useState, useEffect } from "react";
+import {
+  ScrollView,
+  Image,
+  Pressable,
+  ActivityIndicator,
+  StyleSheet,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Gear from "../../assets/img/utils/Gear.png";
+import { getUserInfo } from "../../fetch/UserFetch";
+import { getLists } from "../../fetch/ListsFetch";
+import Profile from "./Profile";
+import Wishlist from "./Wishlist/Wishlist";
+import Lists from "./Lists/Lists";
+import Collections from "./Collections/Collections";
 
-const Home = () => {
+import Bear from "../../assets/img/animals/Bear.png";
+import Bird from "../../assets/img/animals/Bird.png";
+import Butterfly from "../../assets/img/animals/Butterfly.png";
+import Cat from "../../assets/img/animals/Cat.png";
+import Crab from "../../assets/img/animals/Crab.png";
+import Deer from "../../assets/img/animals/Deer.png";
+import Fox from "../../assets/img/animals/Fox.png";
+import Jellyfish from "../../assets/img/animals/Jellyfish.png";
+import Mouse from "../../assets/img/animals/Mouse.png";
+import Pig from "../../assets/img/animals/Pig.png";
+import Sheep from "../../assets/img/animals/Sheep.png";
+import Whale from "../../assets/img/animals/Whale.png";
+import User from "../../assets/img/animals/User.png";
+
+const Home = ({ route }) => {
+  const [data, setData] = useState(null);
+  const [iconImage, setIconImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { id } = route.params;
   const navigation = useNavigation();
+
+  const animalImages = {
+    Jellyfish: Jellyfish,
+    Sheep: Sheep,
+    Deer: Deer,
+    Whale: Whale,
+    Cat: Cat,
+    Bird: Bird,
+    Mouse: Mouse,
+    Crab: Crab,
+    Butterfly: Butterfly,
+    Pig: Pig,
+    Fox: Fox,
+    Bear: Bear,
+    User: User,
+  };
+
+  // Handle functions
 
   const handleSettings = () => {
     // navigation.navigate("Settings");
   };
 
+  // UseEffects
+
+  useEffect(() => {
+    const Info = async () => {
+      await getUserInfo(id, setData, setIsLoading, setError);
+      await getLists(id, setData, setIsLoading, setError);
+    };
+    Info();
+
+    if (data !== null && data.icon !== null) {
+      setIconImage(animalImages[data.icon]);
+      setIsLoading(false);
+    }
+  }, [data]);
+
   return (
-    <ScrollView style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
-      <TouchableOpacity onPress={handleSettings}>
-        <Image style={styles.gear} source={Gear} />
-      </TouchableOpacity>
-      <View style={styles.home}>
-        {/* <Text style={globalstyles.text}>{username}</Text> */}
-        {/* <Text style={globalstyles.text}>{name}</Text> */}
-        <View>
-          <Text style={styles.username}>Clara</Text>
-          <Text style={styles.name}>@claram</Text>
-          <Text style={styles.friends}>2 amigos</Text>
-        </View>
-        <View>
-          <Text style={styles.username}>Icon</Text>
-        </View>
-      </View>
-      <View style={styles.wishlist}>
-        <Text style={styles.text}>Lista de deseos</Text>
-        <View style={globalstyles.card}>
-          <View>
-            <Text style={globalstyles.text}>8 Items</Text>
-            <Text style={globalstyles.text}>Completar</Text>
-          </View>
-          <Text style={globalstyles.text}>Actualizado el 28/09/23</Text>
-        </View>
-      </View>
-    </ScrollView>
+    <>
+      {isLoading ? (
+        <ActivityIndicator
+          size="large"
+          color="#000"
+          style={globalstyles.spinner}
+        />
+      ) : (
+        <ScrollView style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
+          <Pressable onPress={handleSettings}>
+            <Image style={styles.gear} source={Gear} />
+          </Pressable>
+          <Profile data={data} iconImage={iconImage} />
+          <Wishlist data={data} />
+          <Lists />
+          <Collections />
+        </ScrollView>
+      )}
+      {error && alert("Error al cargar home. ¡Inténtalo de nuevo!")}
+    </>
   );
 };
 
 export default Home;
 
-const styles = {
-  home: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-
+const styles = StyleSheet.create({
   gear: {
     width: 30,
     height: 30,
     marginLeft: "auto",
   },
-
-  username: {
-    fontSize: 35,
-    fontFamily: "Inter_500Medium",
-  },
-
-  name: {
-    fontSize: 15,
-    color: "#636262",
-  },
-
-  friends: {
-    fontSize: 18,
-    marginTop: 30,
-    paddingHorizontal: 20,
-    paddingVertical: 5,
-    borderRadius: 50,
-    backgroundColor: "#D9D9D9",
-  },
-
-  wishlist: {
-    marginTop: 25,
-  },
-
-  text: {
-    fontSize: 22,
-    fontFamily: "Inter_500Medium",
-    marginBottom: 15,
-  },
-};
+});

@@ -48,6 +48,29 @@ const userSchema = new Schema(
       ],
       default: "User",
     },
+    wishlist: [
+      {
+        type: Object,
+        properties: {
+          product_name: {
+            type: String,
+            required: true,
+          },
+          url: {
+            type: String,
+          },
+          store: {
+            type: String,
+          },
+          price: {
+            type: Number,
+          },
+          comments: {
+            type: String,
+          }
+        },  timestamps: true // VER SI FUNCIONA TIMESTAMP ASÍ
+      }
+    ],
     list: [
       {
         type: Schema.Types.ObjectId,
