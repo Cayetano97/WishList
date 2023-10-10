@@ -8,7 +8,6 @@ const User = require("../Model/userModel");
 
 router.post("/login", async (req, res) => {
   try {
-    console.log(req.body);
     const data = await User.findOne({ email: req.body.email }).exec();
     console.log(data);
     if (data) {
@@ -32,11 +31,37 @@ router.post("/login", async (req, res) => {
         });
       }
     } else {
-      res.status(404).json({
-        Status: "Error",
-        data: null,
-        error: "Fallo Login - Email or password incorrect",
-      });
+      const userData = await User.findOne({ username: req.body.email }).exec();
+      if (userData) {
+        console.log("Entra en userData");
+        const password = await bcrypt.compare(
+          req.body.password,
+          userData.password
+        );
+        if (password) {
+          res.status(200).json({
+            Status: "Success Login",
+            data: {
+              email: userData.email,
+              password: userData.password,
+            },
+            error: null,
+          });
+        } else {
+          body = req.body;
+          res.status(404).json({
+            Status: "Error - Failed Login",
+            data: null,
+            error: "Fallo Login - Username or password incorrect",
+          });
+        }
+      } else {
+        res.status(404).json({
+          Status: "Error",
+          data: null,
+          error: "Fallo Login - Email or username incorrect",
+        });
+      }
     }
   } catch (error) {
     res.status(404).json({
