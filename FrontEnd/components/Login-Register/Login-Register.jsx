@@ -30,7 +30,6 @@ const LoginRegister = () => {
   const navigation = useNavigation();
 
   const handleSubmit = async () => {
-    console.log("Inicio sesión");
     if (isSelected) {
       const dataResponse = await AsyncStorage.getItem("data_response");
       if (dataResponse !== null) {

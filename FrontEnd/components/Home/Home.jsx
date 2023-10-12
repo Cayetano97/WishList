@@ -109,6 +109,30 @@ const Home = ({ route }) => {
   //   }
   // }, []);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const userInfo = await getUserInfo(_id, setData, setIsLoading, setError);
+      if (userInfo !== null) {
+        setData(userInfo);
+        await getLists(_id, setDataLists, setIsLoading, setError);
+      } else {
+        setError("User not found");
+      }
+    };
+    if (_id !== null || _id !== undefined) {
+      fetchData();
+      setIsLoading(false);
+    } else {
+      setIsLoading(true);
+    }
+  }, [_id]);
+
+  useEffect(() => {
+    if (data && data.icon) {
+      setIconImage(animalImages[data.icon]);
+    }
+  }, [data]);
+
   // useEffect(() => {
   //   const Lists = async () => {
   //     await getLists(_id, setDataLists, setIsLoading, setError);
@@ -116,23 +140,23 @@ const Home = ({ route }) => {
   //   Lists();
   // }, []);
 
-  useEffect(() => {
-    if (_id === null || _id === undefined) {
-      setIsLoading(true);
-    } else {
-      const fetchData = async () => {
-        await getUserInfo(_id, setData, setIsLoading, setError);
-        if (data && data.icon) {
-          setIconImage(animalImages[data.icon]);
-          setIsLoading(false);
-        } else {
-          setIsLoading(true);
-        }
-        await getLists(_id, setDataLists, setIsLoading, setError);
-      };
-      fetchData();
-    }
-  }, [_id, data.icon]);
+  // useEffect(() => {
+  //   if (_id === null || _id === undefined) {
+  //     setIsLoading(true);
+  //   } else {
+  //     const fetchData = async () => {
+  //       await getUserInfo(_id, setData, setIsLoading, setError);
+  //       if (data && data.icon) {
+  //         setIconImage(animalImages[data.icon]);
+  //         setIsLoading(false);
+  //       } else {
+  //         setIsLoading(true);
+  //       }
+  //       await getLists(_id, setDataLists, setIsLoading, setError);
+  //     };
+  //     fetchData();
+  //   }
+  // }, [_id, data.icon]);
 
   return (
     <>
