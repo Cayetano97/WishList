@@ -9,16 +9,35 @@ const Lists = (props) => {
         <Text style={globalstyles.homeText}>Listas</Text>
         <Text style={globalstyles.seeAllText}>Ver todas</Text>
       </View>
-      <Text>{props.data.list_name}</Text>
-      {/* {props.data.data.length === 0 ? (
-        <Text>Aún no tienes ninguna lista. ¡Crea una!</Text>
-      ) : (
-        <Text style={globalstyles.card}>{props.data.list_name}</Text>
-      )} */}
+      <View>
+        {props.data === null ? (
+          <Text
+            style={[
+              globalstyles.card,
+              globalstyles.lighterGrayText,
+              styles.noLists,
+            ]}
+          >
+            Aún no tienes ninguna lista. ¡Crea una!
+          </Text>
+        ) : (
+          props.data.map((list) => {
+            return (
+              <View style={globalstyles.card}>
+                <Text>{list.list_name}</Text>
+              </View>
+            );
+          })
+        )}
+      </View>
     </View>
   );
 };
 
 export default Lists;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  noLists: {
+    paddingVertical: 20,
+  },
+});

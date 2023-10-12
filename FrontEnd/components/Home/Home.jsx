@@ -36,7 +36,7 @@ const Home = ({ route }) => {
   const [iconImage, setIconImage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { id } = route.params;
+  const { _id } = route.params;
   const navigation = useNavigation();
 
   const animalImages = {
@@ -64,23 +64,29 @@ const Home = ({ route }) => {
   // UseEffects
 
   useEffect(() => {
-    const Info = async () => {
-      await getUserInfo(id, setData, setIsLoading, setError);
-    };
-    Info();
+    if (_id === null || _id === undefined) {
+      setIsLoading(true);
+    } else {
+      const Info = async () => {
+        await getUserInfo(_id, setData, setIsLoading, setError);
+      };
+      Info();
 
-    if (data !== null && data.icon !== null) {
-      setIconImage(animalImages[data.icon]);
+      if (data === null || data.icon === null) {
+        setIsLoading(true);
+      } else {
+        setIconImage(animalImages[data.icon]);
+        setIsLoading(false);
+      }
       setIsLoading(false);
     }
-  }, [data]);
+  }, []);
 
   useEffect(() => {
     const Lists = async () => {
-      await getLists(id, setDataLists, setIsLoading, setError);
+      await getLists(_id, setDataLists, setIsLoading, setError);
     };
     Lists();
-    console.log(dataLists);
   }, []);
 
   return (

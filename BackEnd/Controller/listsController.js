@@ -6,7 +6,7 @@ const Lists = require("../Model/listsModel");
 const User = require("../Model/userModel");
 
 
-// Get all lists
+// Get all lists from a user
 router.get("/lists/:id_user", async (req, res) => {
     try {
         const id_user = req.params.id_user;
@@ -25,7 +25,7 @@ router.get("/lists/:id_user", async (req, res) => {
     }
 });
 
-// Get one list
+// Get one list from a user
 router.get("/lists/:id_user/:id_list", async (req, res) => {
     try {
         const id_user = req.params.id_user;

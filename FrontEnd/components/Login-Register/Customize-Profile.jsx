@@ -32,7 +32,7 @@ const CustomizeProfile = ({ route }) => {
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
   const navigation = useNavigation();
-  const { id } = route.params;
+  const { _id } = route.params;
 
   const animalIcons = [
     { name: "Jellyfish", image: Jellyfish },
@@ -52,8 +52,8 @@ const CustomizeProfile = ({ route }) => {
   //Handle functions
 
   const handleUpdateUserInfo = async (textButton) => {
-    updateUserInfo(textButton, id, imageName, setIsLoading, setError);
-    navigation.navigate("Home", { id: id });
+    updateUserInfo(textButton, _id, imageName, setIsLoading, setError);
+    navigation.navigate("Home", { _id: _id });
   };
 
   const handleCreate = () => {
@@ -68,7 +68,7 @@ const CustomizeProfile = ({ route }) => {
 
   useEffect(() => {
     const userInfo = async () => {
-      await getUserInfo(id, setData, setIsLoading, setError);
+      await getUserInfo(_id, setData, setIsLoading, setError);
     };
     userInfo();
 

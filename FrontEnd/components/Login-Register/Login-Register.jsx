@@ -43,7 +43,9 @@ const LoginRegister = () => {
         });
         if (response.ok) {
           const data = await response.json();
-          navigation.navigate("Home", { id: data.data.id });
+          console.log(data);
+          navigation.navigate("Home", { _id: data.data._id });
+          console.log(data.data._id);
         } else {
           alert("Inicio de sesión incorrecto");
         }
