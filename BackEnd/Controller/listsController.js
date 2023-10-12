@@ -12,13 +12,13 @@ router.get("/lists/:id_user", async (req, res) => {
         const id_user = req.params.id_user;
         const data = await Lists.findOne({owner: id_user}).exec();
         res.status(200).json({
-        Status: "Success",
+        status: "Success",
         data: data,
         error: null,
         });
     } catch (error) {
         res.status(404).json({
-        Status: "Error",
+        status: "Error",
         data: null,
         error: error,
         });
@@ -32,13 +32,13 @@ router.get("/lists/:id_user/:id_list", async (req, res) => {
         const id_list = req.params.id_list;
         const data = await Lists.findOne({owner: id_user, _id: id_list}).exec();
         res.status(200).json({
-        Status: "Success",
+        status: "Success",
         data: data,
         error: null,
         });
     } catch (error) {
         res.status(404).json({
-        Status: "Error",
+        status: "Error",
         data: null,
         error: error,
         });
@@ -57,23 +57,24 @@ router.post("/newlist/:id_user", async (req, res) => {
             shared: req.body.shared,
             list_items: req.body.list_items,
         });
-        const save = await data.save();
+        const datasaved = await data.save();
 
          // Actualizar el campo de listas del usuario con el ID de la lista nueva
         await User.findByIdAndUpdate(id_user, {
-            $push: { lists: save._id },
+            $push: { lists: datasaved._id },
       });
 
         res.status(200).json({
-        Status: "Success",
-        data: save,
+        status: "Success",
+        data: datasaved,
         error: null,
         });
+
     } catch (error) {
         res.status(404).json({
         Status: "Error",
         data: null,
-        error: error,
+        error,
         });
     }
 });

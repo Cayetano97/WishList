@@ -61,13 +61,10 @@ const LoginRegister = () => {
     const isValidEmail = emailRegex.test(email);
     const isValidPassword = passwordRegex.test(password);
     if (email !== "" && password !== "" && name !== "" && username !== "") {
-      console.log(password);
-      console.log(isValidPassword);
       if (isValidEmail) {
         if (isValidPassword) {
           if (password === password2) {
             try {
-              console.log("try");
               const response = await fetch(`${globals.IP}/register`, {
                 method: "POST",
                 headers: {
@@ -82,7 +79,10 @@ const LoginRegister = () => {
               });
               if (response.ok) {
                 const data = await response.json();
-                navigation.navigate("CustomizeProfile", { id: data.data.id });
+                console.log(data);
+                navigation.navigate("CustomizeProfile", {
+                  id: data.data._id,
+                });
               } else {
                 alert("Registro incorrecto");
               }

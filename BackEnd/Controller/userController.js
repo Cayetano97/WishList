@@ -13,7 +13,7 @@ router.post("/login", async (req, res) => {
       const password = await bcrypt.compare(req.body.password, data.password);
       if (password) {
         res.status(200).json({
-          Status: "Success Login",
+          status: "Success Login",
           data: {
             id: data._id,
             email: data.email,
@@ -24,7 +24,7 @@ router.post("/login", async (req, res) => {
       } else {
         body = req.body;
         res.status(404).json({
-          Status: "Error - Failed Login",
+          status: "Error - Failed Login",
           data: null,
           error: "Fallo Login - Email or password incorrect",
         });
@@ -39,7 +39,7 @@ router.post("/login", async (req, res) => {
         );
         if (password) {
           res.status(200).json({
-            Status: "Success Login",
+            status: "Success Login",
             data: {
               email: userData.email,
               password: userData.password,
@@ -49,14 +49,14 @@ router.post("/login", async (req, res) => {
         } else {
           body = req.body;
           res.status(404).json({
-            Status: "Error - Failed Login",
+            status: "Error - Failed Login",
             data: null,
             error: "Fallo Login - Username or password incorrect",
           });
         }
       } else {
         res.status(404).json({
-          Status: "Error",
+          status: "Error",
           data: null,
           error: "Fallo Login - Email or username incorrect",
         });
@@ -64,7 +64,7 @@ router.post("/login", async (req, res) => {
     }
   } catch (error) {
     res.status(404).json({
-      Status: "Failed",
+      status: "Failed",
       datasaved: null,
       error: "Fallo Login - Email or password incorrect",
     });
@@ -82,9 +82,9 @@ router.post("/register", async (req, res) => {
       password: await bcrypt.hash(req.body.password, 10),
     });
     const datasaved = await data.save();
-    res.status(200).json({ Status: "Success register", datasaved });
+    res.status(200).json({ status: "Success register", data: datasaved, error: null });
   } catch (error) {
-    res.status(400).json({ Status: "Error", error: "Fallo register" });
+    res.status(400).json({ status: "Error", data: null, error: "Fallo register" });
   }
 });
 
@@ -103,11 +103,11 @@ router.patch("/update/:id", async (req, res) => {
     );
     res
       .status(200)
-      .json({ Status: "Success updating user info", data, error: null });
+      .json({ status: "Success updating user info", data, error: null });
   } catch (error) {
     res
       .status(401)
-      .json({ Status: "Failed updating user info", data: null, error });
+      .json({ status: "Failed updating user info", data: null, error });
   }
 });
 
@@ -117,9 +117,9 @@ router.get("/userinfo/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const data = await User.findOne({ _id: id }).exec();
-    res.status(200).json({ Status: "Success getting user info", data });
+    res.status(200).json({ status: "Success getting user info", data, error: null });
   } catch (error) {
-    res.status(401).json({ Status: "Failed getting user info", data: null });
+    res.status(401).json({ status: "Failed getting user info", data: null, error });
   }
 
 
