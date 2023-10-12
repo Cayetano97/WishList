@@ -50,7 +50,7 @@ const LoginRegister = () => {
         });
         if (response.ok) {
           const data = await response.json();
-          navigation.navigate("Home", { id: data.data.id });
+          navigation.navigate("Home", { _id: data.data._id });
           if (isSelected) {
             await AsyncStorage.setItem(
               "data_response",
@@ -92,7 +92,10 @@ const LoginRegister = () => {
               });
               if (response.ok) {
                 const data = await response.json();
-                navigation.navigate("CustomizeProfile", { id: data.data.id });
+                console.log(data);
+                navigation.navigate("CustomizeProfile", {
+                  id: data.data._id,
+                });
               } else {
                 alert("Registro incorrecto");
               }

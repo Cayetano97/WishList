@@ -31,7 +31,7 @@ const userSchema = new Schema(
     },
     icon: {
       type: String,
-      Enum: [
+      enum: [
         "Jellyfish",
         "Sheep",
         "Deer",
@@ -71,10 +71,10 @@ const userSchema = new Schema(
         },  timestamps: true // VER SI FUNCIONA TIMESTAMP ASÍ
       }
     ],
-    list: [
+    lists: [
       {
         type: Schema.Types.ObjectId,
-        ref: "list",
+        ref: "lists",
       },
     ],
     collections: [
@@ -90,7 +90,7 @@ const userSchema = new Schema(
           id_user: {
             type: Schema.Types.ObjectId,
             required: true,
-            ref: "user",
+            ref: "users",
           },
           state: {
             type: String,

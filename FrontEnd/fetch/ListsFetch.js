@@ -2,10 +2,10 @@ import globals from "../Global";
 
 //Obtener listas de un usuario
 
-const getLists = async (id, setData, setIsLoading, setError) => {
+const getLists = async (id_user, setData, setIsLoading, setError) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${globals.IP}/lists/${id}`, {
+      const response = await fetch(`${globals.IP}/lists/${id_user}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -22,7 +22,7 @@ const getLists = async (id, setData, setIsLoading, setError) => {
     } catch (error) {
       setError(true);
     }
-    setIsLoading(false);
+  setIsLoading(false);
 };
 
 // Actualizar listas de un usuario

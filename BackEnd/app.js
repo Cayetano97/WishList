@@ -29,6 +29,9 @@ db.on("error", (error) => {
 const user = require("./Controller/userController");
 app.use("/", user);
 
+const lists = require("./Controller/listsController");
+app.use("/", lists);
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
