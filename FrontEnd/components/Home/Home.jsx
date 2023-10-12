@@ -63,31 +63,76 @@ const Home = ({ route }) => {
 
   // UseEffects
 
+  // useEffect(() => {
+  //   if (_id !== null || _id !== undefined) {
+  //     const fetchData = async () => {
+  //       try {
+  //         setIsLoading(true);
+  //         const [userInfo, lists] = await Promise.all([
+  //           getUserInfo(_id, setData, setIsLoading, setError),
+  //           getLists(_id, setDataLists, setIsLoading, setError),
+  //         ]);
+  //         setData(userInfo);
+  //         setDataLists(lists);
+  //         if (userInfo && userInfo.icon) {
+  //           setIconImage(animalImages[userInfo.icon]);
+  //         }
+  //         setIsLoading(false);
+  //       } catch (error) {
+  //         setError(error);
+  //         setIsLoading(false);
+  //       }
+  //     };
+  //     fetchData();
+  //   } else {
+  //     setIsLoading(true);
+  //   }
+  // }, [_id]);
+
+  // useEffect(() => {
+  //   if (_id === null || _id === undefined) {
+  //     setIsLoading(true);
+  //   } else {
+  //     setIsLoading(true);
+  //     const Info = async () => {
+  //       await getUserInfo(_id, setData, setIsLoading, setError);
+  //     };
+  //     Info();
+
+  //     if (data === null || data.icon === null) {
+  //       setIsLoading(true);
+  //     } else {
+  //       setIconImage(animalImages[data.icon]);
+  //       setIsLoading(false);
+  //     }
+  //     setIsLoading(false);
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   const Lists = async () => {
+  //     await getLists(_id, setDataLists, setIsLoading, setError);
+  //   };
+  //   Lists();
+  // }, []);
+
   useEffect(() => {
     if (_id === null || _id === undefined) {
       setIsLoading(true);
     } else {
-      const Info = async () => {
+      const fetchData = async () => {
         await getUserInfo(_id, setData, setIsLoading, setError);
+        if (data && data.icon) {
+          setIconImage(animalImages[data.icon]);
+          setIsLoading(false);
+        } else {
+          setIsLoading(true);
+        }
+        await getLists(_id, setDataLists, setIsLoading, setError);
       };
-      Info();
-
-      if (data === null || data.icon === null) {
-        setIsLoading(true);
-      } else {
-        setIconImage(animalImages[data.icon]);
-        setIsLoading(false);
-      }
-      setIsLoading(false);
+      fetchData();
     }
-  }, []);
-
-  useEffect(() => {
-    const Lists = async () => {
-      await getLists(_id, setDataLists, setIsLoading, setError);
-    };
-    Lists();
-  }, []);
+  }, [_id, data.icon]);
 
   return (
     <>

@@ -1,6 +1,7 @@
 import { View, Text, Image, StyleSheet } from "react-native";
 
 const Profile = (props) => {
+  console.log(props.data);
   return (
     <View style={styles.home}>
       <View>
