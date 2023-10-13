@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 
 import Bear from "../../assets/img/animals/Bear.png";
@@ -16,8 +15,6 @@ import Whale from "../../assets/img/animals/Whale.png";
 import User from "../../assets/img/animals/User.png";
 
 const Profile = (props) => {
-  const [iconImage, setIconImage] = useState(null);
-
   const animalImages = {
     Jellyfish: Jellyfish,
     Sheep: Sheep,
@@ -34,10 +31,6 @@ const Profile = (props) => {
     User: User,
   };
 
-  useEffect(() => {
-    setIconImage(animalImages[props.data.icon]);
-  }, []);
-
   return (
     <>
       {props.isLoading ? (
@@ -47,19 +40,24 @@ const Profile = (props) => {
           style={globalstyles.spinner}
         />
       ) : (
-        <View style={styles.home}>
-          <View>
-            <Text style={styles.username}>{props.data.username}</Text>
-            <Text style={styles.name}>{props.data.name}</Text>
-            <Text style={styles.friends}>
-              {props.data.friends.length}{" "}
-              {props.data.friends.length === 1 ? "amigo" : "amigos"}
-            </Text>
+        <View>
+          <View style={styles.home}>
+            <View>
+              <Text style={styles.name}>{props.data.name}</Text>
+              <Text style={styles.username}>{props.data.username}</Text>
+            </View>
+            <View styles={styles.icon}>
+              <View style={styles.imageBackground} />
+              <Image
+                style={styles.image}
+                source={animalImages[props.data.icon]}
+              />
+            </View>
           </View>
-          <View styles={styles.icon}>
-            <View style={styles.imageBackground} />
-            <Image style={styles.image} source={iconImage} />
-          </View>
+          <Text style={styles.friends}>
+            {props.data.friends.length}{" "}
+            {props.data.friends.length === 1 ? "amigo" : "amigos"}
+          </Text>
         </View>
       )}
     </>
@@ -76,19 +74,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  username: {
+  name: {
     fontSize: 35,
     fontFamily: "Inter_500Medium",
+    paddingBottom: 5,
   },
 
-  name: {
+  username: {
     fontSize: 15,
     color: "#636262",
   },
 
   friends: {
+    flexWrap: "wrap", // Wrap text if too long
+    alignSelf: "flex-start", // Align text to left
     fontSize: 18,
-    marginTop: 30,
+    marginTop: 12,
     paddingHorizontal: 20,
     paddingVertical: 5,
     borderRadius: 50,

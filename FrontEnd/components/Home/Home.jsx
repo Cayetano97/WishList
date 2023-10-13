@@ -41,12 +41,17 @@ const Home = ({ route }) => {
   }, [_id]);
 
   useEffect(() => {
-    if (data !== null && data !== undefined) {
+    if (
+      data !== null &&
+      data !== undefined &&
+      dataLists !== null &&
+      dataLists !== undefined
+    ) {
       setIsLoading(false);
     } else {
       setIsLoading(true);
     }
-  }, [data]);
+  }, [data, dataLists]);
 
   return (
     <>
@@ -56,6 +61,8 @@ const Home = ({ route }) => {
           color="#000"
           style={globalstyles.spinner}
         />
+      ) : error ? (
+        alert("Error al cargar home. ¡Inténtalo de nuevo!")
       ) : (
         <ScrollView style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
           <Pressable onPress={handleSettings}>
@@ -67,7 +74,6 @@ const Home = ({ route }) => {
           <Collections />
         </ScrollView>
       )}
-      {error && alert("Error al cargar home. ¡Inténtalo de nuevo!")}
     </>
   );
 };

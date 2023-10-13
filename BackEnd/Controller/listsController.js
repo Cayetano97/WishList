@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcrypt");
 
 const Lists = require("../Model/listsModel");
 const User = require("../Model/userModel");
@@ -10,7 +9,7 @@ const User = require("../Model/userModel");
 router.get("/lists/:id_user", async (req, res) => {
     try {
         const id_user = req.params.id_user;
-        const data = await Lists.findOne({owner: id_user}).exec();
+        const data = await Lists.find({owner: id_user}).exec();
         res.status(200).json({
         status: "Success",
         data: data,

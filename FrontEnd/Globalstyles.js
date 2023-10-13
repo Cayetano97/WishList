@@ -72,6 +72,14 @@ const globalstyles = StyleSheet.create({
         marginTop: "100%",
     },
 
+    // Lists icon styles
+    listsIcons: {
+        backgroundColor: "#fbd99d",
+        borderRadius: 10,
+        width: 55,
+        height: 55,
+    },
+
     // Button styles
     button: {
         padding: 8,
