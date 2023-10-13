@@ -3,24 +3,34 @@ import globalstyles from "../../../Globalstyles";
 
 const Wishlist = (props) => {
   return (
-    <View style={styles.wishlist}>
-      <Text style={globalstyles.homeText}>Lista de deseos</Text>
-      <View style={globalstyles.card}>
-        <View style={styles.items}>
-          <Text style={styles.products}>
-            {props.data.wishlist.length}{" "}
-            {props.data.wishlist.length === 1 ? "Item" : "Items"}
-          </Text>
-          <Text style={styles.complete}>Completar</Text>
+    <>
+      {props.isLoading ? (
+        <ActivityIndicator
+          size="large"
+          color="#000"
+          style={globalstyles.spinner}
+        />
+      ) : (
+        <View style={styles.wishlist}>
+          <Text style={globalstyles.homeText}>Lista de deseos</Text>
+          <View style={globalstyles.card}>
+            <View style={styles.items}>
+              <Text style={styles.products}>
+                {props.data.wishlist.length}{" "}
+                {props.data.wishlist.length === 1 ? "Item" : "Items"}
+              </Text>
+              <Text style={styles.complete}>Completar</Text>
+            </View>
+            <Text style={[globalstyles.lighterGrayText, styles.wishlistText]}>
+              {" "}
+              {props.data.wishlist.length === 0
+                ? "¡Agrega productos a tu lista de deseos!"
+                : `Actualizada el ${props.data.wishlist.updatedAt}`}
+            </Text>
+          </View>
         </View>
-        <Text style={[globalstyles.lighterGrayText, styles.wishlistText]}>
-          {" "}
-          {props.data.wishlist.length === 0
-            ? "¡Agrega productos a tu lista de deseos!"
-            : `Actualizada el ${props.data.wishlist.updatedAt}`}
-        </Text>
-      </View>
-    </View>
+      )}
+    </>
   );
 };
 
