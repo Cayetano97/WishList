@@ -43,6 +43,29 @@ const listsSchema = new Schema({
         ref: "collections",
     },
 
+    person_associated: [
+        {
+            type: Object,
+            properties: {
+                id_user: {
+                    type: Schema.Types.ObjectId,
+                    required: true,
+                    ref: "users",
+                },
+                username: {
+                    type: String,
+                    required: true,
+                    ref: "users",
+                },
+                name: {
+                    type: String,
+                    required: true,
+                    ref: "users",
+                },
+            },
+        }
+    ],
+
     shared: [
         {
             type: Object,

@@ -73,6 +73,15 @@ const globalstyles = StyleSheet.create({
         borderRadius: 10,
         width: 55,
         height: 55,
+        marginRight: 15,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+
+    listsImage: {
+        width: 65,
+        height: 65,
     },
 
     listName: {

@@ -69,11 +69,12 @@ const Lists = (props) => {
             return (
               <View style={[globalstyles.card, styles.lists]} key={list._id}>
                 <View>
-                  <View style={[globalstyles.listsIcons, styles.icons]} />
-                  <Image
-                    style={[globalstyles.image, styles.image]}
-                    source={stuffIcons[list.icon]}
-                  />
+                  <View style={globalstyles.listsIcons}>
+                    <Image
+                      style={globalstyles.listsImage}
+                      source={stuffIcons[list.icon]}
+                    />
+                  </View>
                 </View>
                 <View>
                   <Text style={globalstyles.listName}>{list.list_name}</Text>
@@ -109,17 +110,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "left",
     alignItems: "center",
-  },
-
-  icons: {
-    marginRight: 15,
-  },
-
-  image: {
-    width: 65,
-    height: 65,
-    position: "absolute",
-    top: -5,
-    left: -5,
   },
 });

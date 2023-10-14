@@ -7,7 +7,6 @@ import {
   Image,
   ActivityIndicator,
 } from "react-native";
-import { useState, useEffect } from "react";
 
 import Baby from "../../assets/img/stuffs/Baby.png";
 import Ball from "../../assets/img/stuffs/Ball.png";
@@ -49,8 +48,24 @@ const CardLists = (props) => {
         return (
           <View key={list._id} style={globalstyles.card}>
             <View style={styles.cardHeader}>
-              <Image style={styles.icon} source={stuffIcons[list.icon]} />
-              <Text style={styles.cardTitle}>{list.list_name}</Text>
+              <View style={globalstyles.listsIcons}>
+                <Image
+                  style={globalstyles.listsImage}
+                  source={stuffIcons[list.icon]}
+                />
+              </View>
+              <View>
+                <Text style={globalstyles.listName}>{list.list_name}</Text>
+                <View>
+                  <Text style={globalstyles.lighterGrayText}>
+                    {list.list_items.length}
+                    {list.list_items.length === 1 ? " Item · " : " Items · "}
+                  </Text>
+                  <Text style={globalstyles.lighterGrayText}>
+                    {list.person_associated}
+                  </Text>
+                </View>
+              </View>
             </View>
           </View>
         );
@@ -70,8 +85,8 @@ const styles = StyleSheet.create({
   },
 
   icon: {
-    width: 30,
-    height: 30,
-    marginRight: 10,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
