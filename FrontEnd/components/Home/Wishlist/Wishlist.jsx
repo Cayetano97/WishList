@@ -12,7 +12,9 @@ const Wishlist = (props) => {
         />
       ) : (
         <View style={styles.wishlist}>
-          <Text style={globalstyles.homeText}>Lista de deseos</Text>
+          <Text style={[globalstyles.homeText, styles.list]}>
+            Lista de deseos
+          </Text>
           <View style={globalstyles.card}>
             <View style={styles.items}>
               <Text style={styles.products}>
@@ -39,6 +41,10 @@ export default Wishlist;
 const styles = StyleSheet.create({
   wishlist: {
     marginTop: 25,
+  },
+
+  list: {
+    paddingVertical: 5,
   },
 
   items: {

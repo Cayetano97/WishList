@@ -11,6 +11,7 @@ import IconFriends from "./assets/img/navbar/Friends.png";
 import LoginRegister from "./components/Login-Register/Login-Register";
 import CustomizeProfile from "./components/Login-Register/Customize-Profile";
 import Home from "./components/Home/Home";
+import MainLists from "./components/Lists/MainLists";
 import Test from "./components/Navbar/Test";
 
 const Stack = createStackNavigator();
@@ -29,7 +30,7 @@ const TabNavigator = () => {
     >
       <Tab.Screen
         name="Listas"
-        component={Test}
+        component={MainLists}
         options={{
           tabBarIcon: ({ focused }) => (
             <View
@@ -146,11 +147,6 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Navbar"
-        component={TabNavigator}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
         name="Login"
         component={LoginRegister}
         options={{ headerShown: false }}
@@ -158,6 +154,11 @@ const AppNavigator = () => {
       <Stack.Screen
         name="CustomizeProfile"
         component={CustomizeProfile}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Navbar"
+        component={TabNavigator}
         options={{ headerShown: false }}
       />
       <Stack.Screen

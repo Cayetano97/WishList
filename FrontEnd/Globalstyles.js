@@ -24,11 +24,6 @@ const globalstyles = StyleSheet.create({
         marginBottom: 10,
     },
 
-    image: {
-        width: "100%",
-        height: "auto",
-    },
-
     input: {
         height: 48,
     },
@@ -78,6 +73,11 @@ const globalstyles = StyleSheet.create({
         borderRadius: 10,
         width: 55,
         height: 55,
+    },
+
+    listName: {
+        fontFamily: "Inter_700Bold",
+        fontSize: 18,
     },
 
     // Button styles
@@ -134,6 +134,20 @@ const globalstyles = StyleSheet.create({
         color: "#fff",
         textAlign: "left",
         marginLeft: 50,
+    },
+
+    // Screen general styles
+
+    mainScreen: {
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+    },
+
+    textScreen: {
+        textAlign: "center",
+        fontSize: 22,
+        fontFamily: "Inter_500Medium",
+        paddingVertical: 5,
     },
 });
 

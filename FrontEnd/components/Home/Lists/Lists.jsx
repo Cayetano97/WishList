@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet, Image } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import globalstyles from "../../../Globalstyles";
 
 import Baby from "../../../assets/img/stuffs/Baby.png";
@@ -18,6 +19,8 @@ import Stroller from "../../../assets/img/stuffs/Stroller.png";
 import Tree from "../../../assets/img/stuffs/Tree.png";
 
 const Lists = (props) => {
+  const navigation = useNavigation();
+
   const stuffIcons = {
     Baby: Baby,
     Ball: Ball,
@@ -36,11 +39,19 @@ const Lists = (props) => {
     Tree: Tree,
   };
 
+  const handleNavigate = () => {
+    navigation.navigate("Navbar", {
+      screen: "Listas",
+    });
+  };
+
   return (
     <View>
       <View style={globalstyles.homeHeader}>
         <Text style={globalstyles.homeText}>Listas</Text>
-        <Text style={globalstyles.seeAllText}>Ver todas</Text>
+        <Text onPress={handleNavigate} style={globalstyles.seeAllText}>
+          Ver todas
+        </Text>
       </View>
       <View>
         {props.data === null ? (
@@ -65,13 +76,16 @@ const Lists = (props) => {
                   />
                 </View>
                 <View>
-                  <Text style={styles.listName}>{list.list_name}</Text>
+                  <Text style={globalstyles.listName}>{list.list_name}</Text>
                   <Text style={globalstyles.lighterGrayText}>
                     {list.list_items.length}{" "}
                     {list.list_items.length === 1 ? "Item" : "Items"}
                     {" · "}
-                    {"Actualizado el"}{" "}
-                    {new Date(list.updatedAt).toLocaleString().slice(0, 10)}
+                    {list.list_items.length === 0
+                      ? "Creado el " +
+                        new Date(list.createdAt).toLocaleString().slice(0, 10)
+                      : "Actualizado el " +
+                        new Date(list.updatedAt).toLocaleString().slice(0, 10)}
                   </Text>
                 </View>
               </View>
@@ -107,10 +121,5 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: -5,
     left: -5,
-  },
-
-  listName: {
-    fontFamily: "Inter_700Bold",
-    fontSize: 18,
   },
 });

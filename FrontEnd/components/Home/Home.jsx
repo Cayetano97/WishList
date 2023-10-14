@@ -64,7 +64,7 @@ const Home = ({ route }) => {
       ) : error ? (
         alert("Error al cargar home. ¡Inténtalo de nuevo!")
       ) : (
-        <ScrollView style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
+        <ScrollView style={globalstyles.mainScreen}>
           <Pressable onPress={handleSettings}>
             <Image style={styles.gear} source={Gear} />
           </Pressable>
