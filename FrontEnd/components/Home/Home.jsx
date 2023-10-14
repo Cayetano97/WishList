@@ -27,7 +27,7 @@ const Home = ({ route }) => {
   // Handle functions
 
   const handleSettings = () => {
-    // navigation.navigate("Settings");
+    navigation.navigate("Settings");
   };
 
   // UseEffects

@@ -1,6 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { View, Image } from "react-native";
+import { View, Image, Text } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 import IconLists from "./assets/img/navbar/Lists.png";
 import IconCollections from "./assets/img/navbar/Collections.png";
@@ -11,6 +12,7 @@ import IconFriends from "./assets/img/navbar/Friends.png";
 import LoginRegister from "./components/Login-Register/Login-Register";
 import CustomizeProfile from "./components/Login-Register/Customize-Profile";
 import Home from "./components/Home/Home";
+import Settings from "./components/Settings/Settings";
 import Test from "./components/Navbar/Test";
 
 const Stack = createStackNavigator();
@@ -146,11 +148,6 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Navbar"
-        component={TabNavigator}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
         name="Login"
         component={LoginRegister}
         options={{ headerShown: false }}
@@ -161,9 +158,37 @@ const AppNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
+        name="Navbar"
+        component={TabNavigator}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="Home"
         component={Home}
         options={{ headerShown: false }}
+      />
+      {/* <Stack.Screen
+        name="Settings"
+        component={Settings}
+        options={{ headerShown: true, title: "Ajustes" }}
+      /> */}
+      <Stack.Screen
+        name="Settings"
+        component={Settings}
+        options={{
+          headerTitle: () => (
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Ionicons
+                name="settings-outline"
+                size={24}
+                color="black"
+                style={{ marginRight: 10 }}
+              />
+              <Text style={{ fontSize: 18 }}>Ajustes</Text>
+            </View>
+          ),
+          headerShown: true,
+        }}
       />
       <Stack.Screen
         name="Test"
