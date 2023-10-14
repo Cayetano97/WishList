@@ -31,10 +31,12 @@ const LoginRegister = () => {
 
   const handleSubmit = async () => {
     if (isSelected) {
-      setEmail(JSON.parse(await AsyncStorage.getItem("data_response")).email);
-      setPassword(
-        JSON.parse(await AsyncStorage.getItem("data_response")).password
-      );
+      const dataResponse = await AsyncStorage.getItem("data_response");
+      if (dataResponse !== null) {
+        const { email, password } = JSON.parse(dataResponse);
+        setEmail(email);
+        setPassword(password);
+      }
     }
     if (email !== "" && password !== "") {
       try {
