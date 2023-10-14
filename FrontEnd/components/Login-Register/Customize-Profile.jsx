@@ -53,7 +53,10 @@ const CustomizeProfile = ({ route }) => {
 
   const handleUpdateUserInfo = async (textButton) => {
     updateUserInfo(textButton, _id, imageName, setIsLoading, setError);
-    navigation.navigate("Home", { _id: _id });
+    navigation.navigate("Navbar", {
+      screen: "Home",
+      params: { _id: _id },
+    });
   };
 
   const handleCreate = () => {

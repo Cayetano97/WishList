@@ -50,7 +50,11 @@ const LoginRegister = () => {
         });
         if (response.ok) {
           const data = await response.json();
-          navigation.navigate("Home", { _id: data.data._id });
+          navigation.navigate("Navbar", {
+            screen: "Home",
+            params: { _id: data.data._id },
+          });
+          "Home", { _id: data.data._id };
           if (isSelected) {
             await AsyncStorage.setItem(
               "data_response",
