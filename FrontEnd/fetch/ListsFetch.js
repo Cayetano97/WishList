@@ -14,7 +14,6 @@ const getLists = async (id_user, setData, setIsLoading, setError) => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
         setData(data.data);
       } else {
         alert("Error al obtener las listas de un usuario");

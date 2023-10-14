@@ -40,18 +40,19 @@ const Profile = (props) => {
           style={globalstyles.spinner}
         />
       ) : (
-        <View>
-          <View style={styles.home}>
+        <View style={styles.home}>
+          <View style={styles.userInfo}>
             <View>
               <Text style={styles.name}>{props.data.name}</Text>
               <Text style={styles.username}>{props.data.username}</Text>
             </View>
-            <View styles={styles.icon}>
-              <View style={styles.imageBackground} />
-              <Image
-                style={styles.image}
-                source={animalImages[props.data.icon]}
-              />
+            <View style={styles.icon}>
+              <View style={styles.imageBackground}>
+                <Image
+                  style={styles.image}
+                  source={animalImages[props.data.icon]}
+                />
+              </View>
             </View>
           </View>
           <Text style={styles.friends}>
@@ -68,16 +69,21 @@ export default Profile;
 
 const styles = StyleSheet.create({
   home: {
+    marginTop: -10,
+    display: "flex",
+    flexDirection: "column",
+  },
+
+  userInfo: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    justifyContent: "left",
+    alignItems: "flex-start", //No funciona porqué el padre es un row, lo que significa que
   },
 
   name: {
     fontSize: 35,
     fontFamily: "Inter_500Medium",
-    paddingBottom: 5,
   },
 
   username: {
@@ -89,7 +95,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap", // Wrap text if too long
     alignSelf: "flex-start", // Align text to left
     fontSize: 18,
-    marginTop: 12,
+    marginTop: 5,
     paddingHorizontal: 20,
     paddingVertical: 5,
     borderRadius: 50,
@@ -97,27 +103,25 @@ const styles = StyleSheet.create({
   },
 
   icon: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    position: "relative",
+    marginTop: 5,
+    marginLeft: "auto",
+    marginRight: 40,
   },
 
   imageBackground: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 500,
     borderColor: "#000",
-    borderWidth: 2,
+    borderWidth: 1,
     backgroundColor: "#E9DAF2",
-    width: 90,
-    height: 90,
+    width: 85,
+    height: 85,
   },
 
   image: {
-    width: 120,
-    height: 120,
-    zIndex: 1,
-    position: "absolute",
-    top: -15,
-    left: -15,
+    width: 110,
+    height: 110,
   },
 });
