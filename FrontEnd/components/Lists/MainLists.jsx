@@ -40,7 +40,6 @@ const MainLists = () => {
 
   useEffect(() => {
     if (data !== null && data !== undefined) {
-      console.log(data);
       setIsLoading(false);
     } else {
       setIsLoading(true);

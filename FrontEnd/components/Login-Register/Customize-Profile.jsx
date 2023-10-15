@@ -30,6 +30,7 @@ const CustomizeProfile = ({ route }) => {
   const [imageName, setImageName] = useState("Jellyfish");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [errorUpdate, setErrorUpdate] = useState(null);
   const [data, setData] = useState(null);
   const navigation = useNavigation();
   const { _id } = route.params;
@@ -52,7 +53,7 @@ const CustomizeProfile = ({ route }) => {
   //Handle functions
 
   const handleUpdateUserInfo = async (textButton) => {
-    updateUserInfo(textButton, _id, imageName, setIsLoading, setError);
+    updateUserInfo(textButton, _id, imageName, setIsLoading, setErrorUpdate);
     navigation.navigate("Navbar", {
       screen: "Home",
       params: { _id: _id },
@@ -74,7 +75,9 @@ const CustomizeProfile = ({ route }) => {
       await getUserInfo(_id, setData, setIsLoading, setError);
     };
     userInfo();
+  }, [_id]);
 
+  useEffect(() => {
     if (data !== null && data.name !== null && data.username !== null) {
       setIsLoading(false);
     }
@@ -88,6 +91,8 @@ const CustomizeProfile = ({ route }) => {
           color="#000"
           style={globalstyles.spinner}
         />
+      ) : error ? (
+        alert("Algo no ha ido como debía. ¡Inténtalo de nuevo!")
       ) : (
         <View style={globalstyles.main}>
           <Text style={styles.text}>Personaliza tu perfil</Text>
@@ -146,7 +151,7 @@ const CustomizeProfile = ({ route }) => {
           </Pressable>
         </View>
       )}
-      {error && alert("Error al crear el perfil. ¡Inténtalo de nuevo!")}
+      {errorUpdate && alert("Algo no ha ido como debía. ¡Inténtalo de nuevo!")}
     </>
   );
 };

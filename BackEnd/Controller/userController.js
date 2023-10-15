@@ -125,6 +125,7 @@ router.patch("/update/:id", async (req, res) => {
 router.get("/userinfo/:id", async (req, res) => {
   try {
     const id = req.params.id;
+    console.log(id);
     const data = await User.findOne({ _id: id }).exec();
     res.status(200).json({ status: "Success getting user info", data, error: null });
   } catch (error) {

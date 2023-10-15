@@ -53,6 +53,7 @@ router.post("/newlist/:id_user", async (req, res) => {
             list_name: req.body.list_name,
             icon: req.body.icon,
             id_collection: req.body.id_collection,
+            person_associated: req.body.person_associated,
             shared: req.body.shared,
             list_items: req.body.list_items,
         });

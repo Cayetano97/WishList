@@ -37,7 +37,9 @@ const Home = ({ route }) => {
       await getUserInfo(_id, setData, setIsLoading, setError);
       await getLists(_id, setDataLists, setIsLoading, setError);
     };
-    fetchData();
+    if (_id) {
+      fetchData();
+    }
   }, [_id]);
 
   useEffect(() => {
