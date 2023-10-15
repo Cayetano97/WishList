@@ -26,6 +26,7 @@ import Ring from "../../assets/img/stuffs/Ring.png";
 import Sock from "../../assets/img/stuffs/Sock.png";
 import Stroller from "../../assets/img/stuffs/Stroller.png";
 import Tree from "../../assets/img/stuffs/Tree.png";
+import User from "../../assets/img/animals/User.png";
 
 const NewList = () => {
   const inputRef = useRef(null);
@@ -49,6 +50,7 @@ const NewList = () => {
     { name: "Sock", image: Sock },
     { name: "Stroller", image: Stroller },
     { name: "Tree", image: Tree },
+    { name: "User", image: User },
   ];
 
   useEffect(() => {
@@ -75,7 +77,7 @@ const NewList = () => {
         ]}
         placeholder={"Nombre de la lista"}
       />
-      <View style={[globalstyles.card, styles.stuffIcons]}>
+      <View style={[globalstyles.card, globalstyles.cardIcons]}>
         <Text style={styles.textIcon}>Elige un icono</Text>
         <View style={styles.stuffIcons}>
           {stuffIcons.map((stuff) => {
@@ -113,11 +115,11 @@ const styles = StyleSheet.create({
     height: 120,
   },
 
-  stuffIcons: {
-    height: 310,
-    marginTop: 15,
-    marginBottom: 20,
-  },
+  //   stuffIcons: {
+  //     height: 310,
+  //     marginTop: 15,
+  //     marginBottom: 20,
+  //   },
 
   textIcon: {
     fontFamily: "Inter_400Regular",

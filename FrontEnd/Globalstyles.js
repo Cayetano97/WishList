@@ -209,7 +209,15 @@ const globalstyles = StyleSheet.create({
         paddingVertical: 5,
     },
 
-    
+    cardIcons: {
+        height: 310,
+        marginTop: 15,
+        marginBottom: 20,
+    },
+
+    textIcon: {
+        
+    },
 });
 
 export default globalstyles;

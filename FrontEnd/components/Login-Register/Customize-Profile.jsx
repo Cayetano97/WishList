@@ -105,6 +105,7 @@ const CustomizeProfile = ({ route }) => {
             </View>
           </View>
           <View style={[globalstyles.card, styles.icons]}>
+            {/* <View style={[globalstyles.card, globalstyles.cardIcons]}> */}
             <Text style={styles.textIcon}>Elige un icono</Text>
             <View style={styles.animalIcons}>
               {animalIcons.map((animal) => {
