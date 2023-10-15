@@ -82,11 +82,7 @@ const Lists = (props) => {
                     {list.list_items.length}{" "}
                     {list.list_items.length === 1 ? "Item" : "Items"}
                     {" · "}
-                    {list.list_items.length === 0
-                      ? "Creado el " +
-                        new Date(list.createdAt).toLocaleString().slice(0, 10)
-                      : "Actualizado el " +
-                        new Date(list.updatedAt).toLocaleString().slice(0, 10)}
+                    {list.person_associated}
                   </Text>
                 </View>
               </View>

@@ -68,7 +68,7 @@ const MainLists = () => {
           <View>
             <Text style={styles.lists}>Listas ({data.length})</Text>
             <View style={[globalstyles.card, styles.short]}>
-              <Text style={styles.shortText}>Ordena por fecha</Text>
+              <Text style={styles.shortText}>Ordenar por fecha</Text>
               <Image style={styles.arrows} source={Arrows} />
             </View>
           </View>

@@ -24,6 +24,13 @@ const globalstyles = StyleSheet.create({
         marginBottom: 10,
     },
 
+    flexRow: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "left",
+    },
+
     input: {
         height: 48,
     },
@@ -38,6 +45,12 @@ const globalstyles = StyleSheet.create({
         fontFamily: "Inter_300Light",
         fontSize: 15,
         color: "#636262",
+        paddingVertical: 5,
+    },
+
+    lighterText: {
+        fontFamily: "Inter_300Light",
+        fontSize: 15,
         paddingVertical: 5,
     },
 
