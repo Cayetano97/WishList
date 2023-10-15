@@ -91,9 +91,13 @@ router.post("/register", async (req, res) => {
       password: await bcrypt.hash(req.body.password, 10),
     });
     const datasaved = await data.save();
-    res.status(200).json({ status: "Success register", data: datasaved, error: null });
+    res
+      .status(200)
+      .json({ status: "Success register", data: datasaved, error: null });
   } catch (error) {
-    res.status(400).json({ status: "Error", data: null, error: "Fallo register" });
+    res
+      .status(400)
+      .json({ status: "Error", data: null, error: "Fallo register" });
   }
 });
 
@@ -126,9 +130,27 @@ router.get("/userinfo/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const data = await User.findOne({ _id: id }).exec();
-    res.status(200).json({ status: "Success getting user info", data, error: null });
+    res
+      .status(200)
+      .json({ status: "Success getting user info", data, error: null });
   } catch (error) {
-    res.status(401).json({ status: "Failed getting user info", data: null, error });
+    res
+      .status(401)
+      .json({ status: "Failed getting user info", data: null, error });
+  }
+});
+
+// Delete user by id
+
+router.delete("/deleteuser/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const data = await User.deleteOne({ _id: id }).exec();
+    res
+      .status(200)
+      .json({ status: "Success deleting user", data, error: null });
+  } catch (error) {
+    res.status(401).json({ status: "Failed deleting user", data: null, error });
   }
 });
 

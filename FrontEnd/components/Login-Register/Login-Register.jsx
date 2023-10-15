@@ -11,7 +11,7 @@ import {
 import BirdIcon from "../../assets/img/animals/BirdMain.png";
 import OpenEye from "../../assets/img/utils/OpenEyePassword.png";
 import CloseEye from "../../assets/img/utils/ClosedEyePassword.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CheckBox from "expo-checkbox";
 import globalstyles from "../../Globalstyles";
 import globals from "../../Global";
@@ -30,14 +30,6 @@ const LoginRegister = () => {
   const navigation = useNavigation();
 
   const handleSubmit = async () => {
-    if (isSelected) {
-      const dataResponse = await AsyncStorage.getItem("data_response");
-      if (dataResponse !== null) {
-        const { email, password } = JSON.parse(dataResponse);
-        setEmail(email);
-        setPassword(password);
-      }
-    }
     if (email !== "" && password !== "") {
       try {
         const response = await fetch(`${globals.IP}/login`, {
@@ -58,6 +50,10 @@ const LoginRegister = () => {
           });
           "Home", { _id: data.data._id };
           if (isSelected) {
+            await AsyncStorage.setItem(
+              "credentials",
+              JSON.stringify({ email: email, password: password })
+            );
             await AsyncStorage.setItem(
               "data_response",
               JSON.stringify(data.data)
@@ -98,7 +94,6 @@ const LoginRegister = () => {
               });
               if (response.ok) {
                 const data = await response.json();
-                console.log(data);
                 navigation.navigate("CustomizeProfile", {
                   id: data.data._id,
                 });
@@ -170,6 +165,18 @@ const LoginRegister = () => {
     setUsername("");
     setEye(true);
   };
+
+  useEffect(() => {
+    async function fetchData() {
+      const dataResponse = await AsyncStorage.getItem("credentials");
+      if (dataResponse !== null) {
+        const { email, password } = JSON.parse(dataResponse);
+        setEmail(email);
+        setPassword(password);
+      }
+    }
+    fetchData();
+  }, []);
 
   return (
     <ScrollView contentContainerStyle={{ marginBottom: 50 }}>
