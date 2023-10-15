@@ -71,6 +71,17 @@ const globalstyles = StyleSheet.create({
     marginTop: "100%",
   },
 
+  viewBorder: {
+    textAlign: "center",
+    borderColor: "#000",
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 10,
+    width: "90%",
+    fontSize: 18,
+    marginTop: 15,
+  },
+
   // Lists icon styles
   listsIcons: {
     backgroundColor: "#fbd99d",

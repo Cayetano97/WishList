@@ -1,13 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Image,
-  ImageBackground,
-  Pressable,
-  Modal,
-} from "react-native";
+import { View, Text, StyleSheet, Image, Pressable, Modal } from "react-native";
 import { useState } from "react";
 import globalstyles from "../../Globalstyles";
 import ToggleOn from "../../assets/img/utils/ToggleOn.png";
@@ -37,8 +28,11 @@ const Settings = () => {
     setToggle(!toggle);
   };
 
+  const handlePrivacy = () => {
+    navigation.navigate("AccountPrivacy");
+  };
+
   const handleDeleteAccount = async () => {
-    console.log("borrando cuenta");
     const data = await AsyncStorage.getItem("data_response");
     const dataJson = JSON.parse(data);
     try {
@@ -89,12 +83,14 @@ const Settings = () => {
           </Pressable>
         </View>
       </View>
-      <View style={globalstyles.card}>
-        <Text style={globalstyles.listName}>Cuenta y privacidad</Text>
-        <Text style={globalstyles.lighterGrayText}>
-          Personaliza tu perfil y gestiona tus ajustes de privacidad
-        </Text>
-      </View>
+      <Pressable onPress={handlePrivacy}>
+        <View style={globalstyles.card}>
+          <Text style={globalstyles.listName}>Cuenta y privacidad</Text>
+          <Text style={globalstyles.lighterGrayText}>
+            Personaliza tu perfil y gestiona tus ajustes de privacidad
+          </Text>
+        </View>
+      </Pressable>
       <Pressable onPress={handleCloseSesion}>
         <View style={[globalstyles.card, { backgroundColor: "grey" }]}>
           <Text style={{ color: "white", fontSize: 16 }}>Cerrar sesión</Text>
@@ -190,8 +186,8 @@ const styles = StyleSheet.create({
   },
   CloseX: {
     position: "absolute",
-    top: -270,
-    left: 120,
+    top: -285,
+    left: 125,
     width: 100,
     height: 100,
   },

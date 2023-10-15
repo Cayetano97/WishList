@@ -13,6 +13,7 @@ import LoginRegister from "./components/Login-Register/Login-Register";
 import CustomizeProfile from "./components/Login-Register/Customize-Profile";
 import Home from "./components/Home/Home";
 import Settings from "./components/Settings/Settings";
+import AccountPrivacy from "./components/Settings/Account-Privacy";
 import Test from "./components/Navbar/Test";
 
 const Stack = createStackNavigator();
@@ -167,11 +168,6 @@ const AppNavigator = () => {
         component={Home}
         options={{ headerShown: false }}
       />
-      {/* <Stack.Screen
-        name="Settings"
-        component={Settings}
-        options={{ headerShown: true, title: "Ajustes" }}
-      /> */}
       <Stack.Screen
         name="Settings"
         component={Settings}
@@ -186,6 +182,16 @@ const AppNavigator = () => {
               />
               <Text style={{ fontSize: 18 }}>Ajustes</Text>
             </View>
+          ),
+          headerShown: true,
+        }}
+      />
+      <Stack.Screen
+        name="AccountPrivacy"
+        component={AccountPrivacy}
+        options={{
+          headerTitle: () => (
+            <Text style={{ fontSize: 18 }}>Cuenta y Privacidad</Text>
           ),
           headerShown: true,
         }}

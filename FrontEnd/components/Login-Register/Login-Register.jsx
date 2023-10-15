@@ -48,7 +48,6 @@ const LoginRegister = () => {
             screen: "Home",
             params: { _id: data.data._id },
           });
-          "Home", { _id: data.data._id };
           if (isSelected) {
             await AsyncStorage.setItem(
               "credentials",
