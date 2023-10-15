@@ -165,6 +165,19 @@ const globalstyles = StyleSheet.create({
         paddingVertical: 10,
     },
 
+    sectionNameScreen: {
+        fontSize: 22,
+        fontFamily: "Inter_400Regular",
+        color: "#000",
+        paddingTop: 30,
+        paddingBottom: 15,
+        borderTopWidth: 1,
+        borderTopColor: "#000",
+        borderTopLeftRadius: 40,
+        borderTopRightRadius: 40,
+        marginTop: 20,
+    },
+
     textScreen: {
         textAlign: "center",
         fontSize: 22,
