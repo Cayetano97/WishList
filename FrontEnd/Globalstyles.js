@@ -31,6 +31,12 @@ const globalstyles = StyleSheet.create({
         justifyContent: "left",
     },
 
+    flexColumn: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+
     input: {
         height: 48,
     },
@@ -39,6 +45,11 @@ const globalstyles = StyleSheet.create({
         fontFamily: "Inter_300Light",
         fontSize: 17,
         color: "#636262",
+    },
+
+    inputFocus: {
+        borderColor: "#000",
+        borderWidth: 1,
     },
 
     lighterGrayText: {
@@ -81,6 +92,7 @@ const globalstyles = StyleSheet.create({
     },
 
     // Lists icon styles
+
     listsIcons: {
         backgroundColor: "#fbd99d",
         borderRadius: 10,
@@ -103,6 +115,7 @@ const globalstyles = StyleSheet.create({
     },
 
     // Button styles
+
     button: {
         padding: 8,
         borderRadius: 8,
@@ -169,13 +182,16 @@ const globalstyles = StyleSheet.create({
         fontSize: 22,
         fontFamily: "Inter_400Regular",
         color: "#000",
-        paddingTop: 30,
+        paddingTop: 25,
         paddingBottom: 15,
-        borderTopWidth: 1,
-        borderTopColor: "#000",
-        borderTopLeftRadius: 40,
-        borderTopRightRadius: 40,
-        marginTop: 20,
+    },
+    
+    border: {
+        marginTop: 15,
+        borderBottomWidth: 1,
+        borderBottomColor: "#636262",
+        width: "80%",
+        alignSelf: "center",
     },
 
     textScreen: {
@@ -184,6 +200,16 @@ const globalstyles = StyleSheet.create({
         fontFamily: "Inter_500Medium",
         paddingVertical: 5,
     },
+
+    // Screen create list and collection styles
+
+    title: {
+        fontSize: 22,
+        fontFamily: "Inter_500Medium",
+        paddingVertical: 5,
+    },
+
+    
 });
 
 export default globalstyles;

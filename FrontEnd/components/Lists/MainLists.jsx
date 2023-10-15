@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 
 import Plus from "../../assets/img/utils/Plus.png";
 import Arrows from "../../assets/img/utils/Arrows.png";
@@ -19,9 +20,10 @@ import CardLists from "./CardLists";
 const MainLists = () => {
   const [idUser, setIdUser] = useState(null);
   const [data, setData] = useState(null);
-  const [sortData, setSortData] = useState(true);
+  const [sortData, setSortData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigation = useNavigation();
 
   const userInfo = async () => {
     const data = await AsyncStorage.getItem("data_response");
@@ -31,6 +33,10 @@ const MainLists = () => {
   };
 
   //Handle functions
+
+  const handleCreateList = () => {
+    navigation.navigate("NewList");
+  };
 
   const handleSort = () => {
     const sorted = data.sort((a, b) => {
@@ -76,10 +82,13 @@ const MainLists = () => {
         alert("Error al cargar listas. ¡Inténtalo de nuevo!")
       ) : (
         <ScrollView style={globalstyles.mainScreen}>
-          <View style={[globalstyles.card, styles.create]}>
-            <Text style={styles.createText}>Crear lista</Text>
-            <Image style={styles.plus} source={Plus} />
-          </View>
+          <Pressable onPress={handleCreateList}>
+            <View style={[globalstyles.card, styles.create]}>
+              <Text style={styles.createText}>Crear lista</Text>
+              <Image style={styles.plus} source={Plus} />
+            </View>
+          </Pressable>
+          <View style={globalstyles.border} />
           <View>
             <Text style={globalstyles.sectionNameScreen}>
               Listas ({data.length})

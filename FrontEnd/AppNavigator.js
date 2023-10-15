@@ -12,6 +12,7 @@ import LoginRegister from "./components/Login-Register/Login-Register";
 import CustomizeProfile from "./components/Login-Register/Customize-Profile";
 import Home from "./components/Home/Home";
 import MainLists from "./components/Lists/MainLists";
+import NewList from "./components/Lists/NewList";
 import Test from "./components/Navbar/Test";
 
 const Stack = createStackNavigator();
@@ -144,6 +145,9 @@ const TabNavigator = () => {
   );
 };
 const AppNavigator = () => {
+
+  //Rutas generales de la aplicación
+  
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -170,6 +174,11 @@ const AppNavigator = () => {
         name="Test"
         component={Test}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="NewList"
+        component={NewList}
+        options={{ headerShown: true, title: "Nueva Lista" }}
       />
     </Stack.Navigator>
   );
