@@ -203,20 +203,43 @@ const globalstyles = StyleSheet.create({
 
     // Screen create list and collection styles
 
-    title: {
-        fontSize: 22,
-        fontFamily: "Inter_500Medium",
-        paddingVertical: 5,
-    },
-
     cardIcons: {
-        height: 310,
-        marginTop: 15,
-        marginBottom: 20,
+        height: 370,
+        marginVertical: 10,
     },
 
-    textIcon: {
-        
+    textChooseIcon: {
+        fontFamily: "Inter_400Regular",
+        fontSize: 20,
+        marginTop: 10,
+        marginBottom: 15,
+        textAlign: "center",
+    },
+
+    mainIcons: {
+        display: "flex",
+        flexDirection: "row",
+        flexWrap: "wrap",
+        justifyContent: "center",
+    },
+
+    borderImage: {
+        justifyContent: "center",
+        alignItems: "center",
+        marginHorizontal: 10,
+        marginVertical: 6,
+        borderRadius: 500,
+        borderColor: "#000",
+        borderWidth: 2,
+        width: 60,
+        height: 60,
+    }, 
+
+    mainImages: {
+        width: 70,
+        height: 70,
+        zIndex: 2,
+        position: "absolute",
     },
 });
 

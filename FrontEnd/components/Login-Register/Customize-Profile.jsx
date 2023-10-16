@@ -1,3 +1,4 @@
+import globalstyles from "../../Globalstyles";
 import { useState, useEffect } from "react";
 import {
   View,
@@ -22,8 +23,8 @@ import Pig from "../../assets/img/animals/Pig.png";
 import Sheep from "../../assets/img/animals/Sheep.png";
 import Whale from "../../assets/img/animals/Whale.png";
 
-import globalstyles from "../../Globalstyles";
 import { getUserInfo, updateUserInfo } from "../../fetch/UserFetch";
+import Icons from "../Icons/Icons";
 
 const CustomizeProfile = ({ route }) => {
   const [image, setImage] = useState(Jellyfish);
@@ -104,26 +105,13 @@ const CustomizeProfile = ({ route }) => {
               <Text style={styles.unsernameText}>{data.username}</Text>
             </View>
           </View>
-          <View style={[globalstyles.card, styles.icons]}>
-            {/* <View style={[globalstyles.card, globalstyles.cardIcons]}> */}
-            <Text style={styles.textIcon}>Elige un icono</Text>
-            <View style={styles.animalIcons}>
-              {animalIcons.map((animal) => {
-                return (
-                  <Pressable
-                    key={animal.name}
-                    style={styles.animalCards}
-                    onPress={() => {
-                      setImage(animal.image), setImageName(animal.name);
-                    }}
-                  >
-                    <View style={styles.animalBorder} />
-                    <Image source={animal.image} style={styles.animalImages} />
-                  </Pressable>
-                );
-              })}
-            </View>
-          </View>
+          <Icons
+            cardIcons={styles.icons}
+            iconArray={animalIcons}
+            setImage={setImage}
+            setImageName={setImageName}
+            pressableImage={styles.pressableImage}
+          />
           <Pressable
             style={[globalstyles.button, globalstyles.purpleMainButton]}
             onPress={handleCreate}
@@ -216,41 +204,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 
-  textIcon: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 20,
-    marginTop: 10,
-    marginBottom: 15,
-    textAlign: "center",
-  },
-
-  animalIcons: {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-  },
-
-  animalCards: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    marginVertical: 7,
-  },
-
-  animalBorder: {
+  pressableImage: {
+    backgroundColor: "#E9DAF2",
     borderRadius: 500,
-    borderColor: "#000",
-    borderWidth: 2,
-    width: 60,
-    height: 60,
-    marginHorizontal: 10,
-  },
-
-  animalImages: {
-    width: 70,
-    height: 70,
-    zIndex: 1,
-    position: "absolute",
   },
 });

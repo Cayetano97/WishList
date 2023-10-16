@@ -10,6 +10,7 @@ import {
   Pressable,
 } from "react-native";
 import { useRef, useState, useEffect } from "react";
+import Icons from "../Icons/Icons";
 
 import Baby from "../../assets/img/stuffs/Baby.png";
 import Ball from "../../assets/img/stuffs/Ball.png";
@@ -66,7 +67,7 @@ const NewList = () => {
       </View>
       <TextInput
         ref={inputRef}
-        focusable={focus}
+        eidatble={true}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
         style={[
@@ -77,25 +78,13 @@ const NewList = () => {
         ]}
         placeholder={"Nombre de la lista"}
       />
-      <View style={[globalstyles.card, globalstyles.cardIcons]}>
-        <Text style={styles.textIcon}>Elige un icono</Text>
-        <View style={styles.stuffIcons}>
-          {stuffIcons.map((stuff) => {
-            return (
-              <Pressable
-                key={stuff.name}
-                style={styles.stuffCards}
-                onPress={() => {
-                  setImage(stuff.image), setImageName(stuff.name);
-                }}
-              >
-                <View style={styles.stuffBorder} />
-                <Image source={stuff.image} style={styles.stuffImages} />
-              </Pressable>
-            );
-          })}
-        </View>
-      </View>
+      <Icons
+        iconArray={stuffIcons}
+        cardIcons={globalstyles.cardIcons}
+        setImage={setImage}
+        setImageName={setImageName}
+        pressableImage={styles.pressableImage}
+      />
     </ScrollView>
   );
 };
@@ -115,54 +104,8 @@ const styles = StyleSheet.create({
     height: 120,
   },
 
-  //   stuffIcons: {
-  //     height: 310,
-  //     marginTop: 15,
-  //     marginBottom: 20,
-  //   },
-
-  textIcon: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 20,
-    marginTop: 10,
-    marginBottom: 15,
-    textAlign: "center",
-  },
-
-  stuffIcons: {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-  },
-
-  animalIcons: {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-  },
-
-  stuffCards: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    marginVertical: 7,
-  },
-
-  stuffBorder: {
+  pressableImage: {
+    backgroundColor: "#fbd99d",
     borderRadius: 500,
-    borderColor: "#000",
-    borderWidth: 2,
-    width: 60,
-    height: 60,
-    marginHorizontal: 10,
-  },
-
-  stuffImages: {
-    width: 70,
-    height: 70,
-    zIndex: 2,
-    position: "absolute",
   },
 });
