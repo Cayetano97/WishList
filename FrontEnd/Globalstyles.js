@@ -205,7 +205,6 @@ const globalstyles = StyleSheet.create({
 
     cardIcons: {
         height: 370,
-        marginVertical: 10,
     },
 
     textChooseIcon: {

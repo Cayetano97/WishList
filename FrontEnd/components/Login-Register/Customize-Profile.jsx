@@ -129,14 +129,7 @@ const CustomizeProfile = ({ route }) => {
             style={[globalstyles.button, globalstyles.purpleButton]}
             onPress={handleSkip}
           >
-            <Text
-              style={[
-                globalstyles.placeholderButton,
-                globalstyles.placeholderButton,
-              ]}
-            >
-              Omitir
-            </Text>
+            <Text style={globalstyles.placeholderButton}>Omitir</Text>
           </Pressable>
         </View>
       )}
