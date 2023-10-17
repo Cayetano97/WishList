@@ -8,8 +8,11 @@ import {
   Image,
   ActivityIndicator,
   Pressable,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
-import { useRef, useState, useEffect } from "react";
+import { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icons from "../Icons/Icons";
 import { createList } from "../../fetch/ListsFetch";
 
@@ -31,10 +34,19 @@ import Tree from "../../assets/img/stuffs/Tree.png";
 import User from "../../assets/img/animals/User.png";
 
 const NewList = () => {
-  const inputRef = useRef(null);
-  const [focus, setFocus] = useState(false);
+  const [focusName, setFocusName] = useState(false);
+  const [focusAssociate, setFocusAssociate] = useState(false);
+  const [focusCollection, setFocusCollection] = useState(false);
   const [image, setImage] = useState(Baby);
   const [imageName, setImageName] = useState("Baby");
+  const [idUser, setIdUser] = useState(null);
+
+  const userInfo = async () => {
+    const data = await AsyncStorage.getItem("data_response");
+    const dataJson = JSON.parse(data);
+    const _id = dataJson._id;
+    setIdUser(_id);
+  };
 
   const stuffIcons = [
     { name: "Baby", image: Baby },
@@ -57,70 +69,90 @@ const NewList = () => {
 
   const handleCreateList = async () => {
     //Completar
-    await createList(id_user, list_name, setIsLoading, setError);
+    await createList(
+      id_user,
+      list_name,
+      icon,
+      name_collection,
+      person_associated,
+      setIsLoading,
+      setError
+    );
   };
 
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
-
   return (
-    <ScrollView
-      contentContainerStyle={[globalstyles.mainScreen, globalstyles.flexColumn]}
-    >
-      <View style={[globalstyles.listsIcons, styles.icon]}>
-        <Image style={styles.image} source={image} />
-      </View>
-      <TextInput
-        ref={inputRef}
-        eidatble={true}
-        onFocus={() => setFocus(true)}
-        onBlur={() => setFocus(false)}
-        style={[
-          globalstyles.input,
-          globalstyles.card,
-          globalstyles.textInput,
-          focus && globalstyles.inputFocus,
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <ScrollView
+        contentContainerStyle={[
+          globalstyles.mainScreen,
+          globalstyles.flexColumn,
         ]}
-        placeholder={"Nombre de la lista"}
-      />
-      <TextInput
-        ref={inputRef}
-        eidatble={true}
-        onFocus={() => setFocus(true)}
-        onBlur={() => setFocus(false)}
-        style={[
-          globalstyles.input,
-          globalstyles.card,
-          globalstyles.textInput,
-          focus && globalstyles.inputFocus,
-        ]}
-        placeholder={"Asociar lista a..."}
-      />
-      <Icons
-        iconArray={stuffIcons}
-        cardIcons={globalstyles.cardIcons}
-        setImage={setImage}
-        setImageName={setImageName}
-        pressableImage={styles.pressableImage}
-      />
-      <Pressable style={[globalstyles.button, globalstyles.grayButton]}>
-        <Text style={globalstyles.placeholderButton}>Compartir con</Text>
-      </Pressable>
-      <Pressable
-        style={[globalstyles.button, globalstyles.blackMainButton]}
-        onPress={handleCreateList}
       >
-        <Text
+        <View style={[globalstyles.listsIcons, styles.icon]}>
+          <Image style={styles.image} source={image} />
+        </View>
+        <TextInput
+          editable={true}
+          autoFocus={true}
+          onFocus={() => setFocusName(true)}
+          onBlur={() => setFocusName(false)}
           style={[
-            globalstyles.placeholderButton,
-            globalstyles.placeholderMainButton,
+            globalstyles.input,
+            globalstyles.card,
+            globalstyles.textInput,
+            focusName && globalstyles.inputFocus,
           ]}
+          placeholder={"Nombre de la lista"}
+        />
+        <TextInput
+          editable={true}
+          onFocus={() => setFocusAssociate(true)}
+          onBlur={() => setFocusAssociate(false)}
+          style={[
+            globalstyles.input,
+            globalstyles.card,
+            globalstyles.textInput,
+            focusAssociate && globalstyles.inputFocus,
+          ]}
+          placeholder={"Asociar lista a..."}
+        />
+        <TextInput
+          editable={true}
+          onFocus={() => setFocusCollection(true)}
+          onBlur={() => setFocusCollection(false)}
+          style={[
+            globalstyles.input,
+            globalstyles.card,
+            globalstyles.textInput,
+            focusCollection && globalstyles.inputFocus,
+          ]}
+          placeholder={"Añadir a una colección"}
+        />
+        <Icons
+          iconArray={stuffIcons}
+          cardIcons={globalstyles.cardIcons}
+          setImage={setImage}
+          setImageName={setImageName}
+          pressableImage={styles.pressableImage}
+        />
+        <Pressable style={[globalstyles.button, globalstyles.grayButton]}>
+          <Text style={globalstyles.placeholderButton}>Compartir con</Text>
+        </Pressable>
+        <Pressable
+          style={[globalstyles.button, globalstyles.blackMainButton]}
+          onPress={handleCreateList}
         >
-          Crear lista
-        </Text>
-      </Pressable>
-    </ScrollView>
+          <Text
+            style={[
+              globalstyles.placeholderButton,
+              globalstyles.placeholderMainButton,
+            ]}
+          >
+            Crear lista
+          </Text>
+        </Pressable>
+      </ScrollView>
+    </TouchableWithoutFeedback>
   );
 };
 

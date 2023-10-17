@@ -1,15 +1,15 @@
 import globals from "../Global";
 
 //Crear una lista
-const createList = async (id_user, list_name, icon, setIsLoading, setError) => {
+const createList = async (id_user, list_name, icon, name_collection, person_associated, setIsLoading, setError) => {
     setIsLoading(true);
     try {
       const body = {
         id_user: id_user,
         list_name: list_name,
         icon: icon,
-        id_collection: null,
-        person_associated: null,
+        name_collection: name_collection,
+        person_associated: person_associated,
         shared: false,
       };
       const response = await fetch(`${globals.IP}/newlist/${id_user}`, {

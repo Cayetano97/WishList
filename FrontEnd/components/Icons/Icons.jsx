@@ -1,10 +1,12 @@
 import globalstyles from "../../Globalstyles";
 import { View, Text, Image, Pressable, StyleSheet } from "react-native";
 import { useState } from "react";
-import DownArrow from "../../assets/img/utils/DownArrow.png";
+// import DownArrow from "../../assets/img/utils/DownArrow.png";
 
 const Icons = (props) => {
-  const [pressedIcons, setPressedIcons] = useState(false);
+  const [pressedIcons, setPressedIcons] = useState({
+    [props.iconArray[0].name]: true,
+  });
 
   const handlePress = (icon) => {
     props.setImage(icon.image);
