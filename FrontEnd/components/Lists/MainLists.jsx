@@ -57,7 +57,7 @@ const MainLists = () => {
     if (idUser) {
       getLists(idUser, setData, setIsLoading, setError);
     }
-  }, [idUser]);
+  }, [idUser, data]);
 
   useEffect(() => {
     if (data !== null && data !== undefined) {

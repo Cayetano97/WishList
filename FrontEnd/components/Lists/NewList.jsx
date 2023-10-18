@@ -11,7 +11,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icons from "../Icons/Icons";
 import { createList } from "../../fetch/ListsFetch";
@@ -40,6 +41,12 @@ const NewList = () => {
   const [image, setImage] = useState(Baby);
   const [imageName, setImageName] = useState("Baby");
   const [idUser, setIdUser] = useState(null);
+  const [listName, setListName] = useState("");
+  const [nameCollection, setNameCollection] = useState("");
+  const [person, setPerson] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const navigation = useNavigation();
 
   const userInfo = async () => {
     const data = await AsyncStorage.getItem("data_response");
@@ -68,17 +75,25 @@ const NewList = () => {
   ];
 
   const handleCreateList = async () => {
-    //Completar
     await createList(
-      id_user,
-      list_name,
-      icon,
-      name_collection,
-      person_associated,
+      idUser,
+      listName,
+      imageName,
+      nameCollection,
+      person,
       setIsLoading,
       setError
     );
+    error
+      ? alert("Error al crear la lista. Inténtalo de nuevo.")
+      : navigation.navigate("Navbar", {
+          screen: "Listas",
+        });
   };
+
+  useEffect(() => {
+    userInfo();
+  }, []);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -103,6 +118,7 @@ const NewList = () => {
             focusName && globalstyles.inputFocus,
           ]}
           placeholder={"Nombre de la lista"}
+          onChangeText={(text) => setListName(text)}
         />
         <TextInput
           editable={true}
@@ -115,6 +131,7 @@ const NewList = () => {
             focusAssociate && globalstyles.inputFocus,
           ]}
           placeholder={"Asociar lista a..."}
+          onChangeText={(text) => setPerson(text)}
         />
         <TextInput
           editable={true}
@@ -127,6 +144,7 @@ const NewList = () => {
             focusCollection && globalstyles.inputFocus,
           ]}
           placeholder={"Añadir a una colección"}
+          onChangeText={(text) => setNameCollection(text)}
         />
         <Icons
           iconArray={stuffIcons}
